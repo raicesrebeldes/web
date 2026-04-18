@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+     <link rel="icon" href="images/favicon.ico" type="image/ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raíces Rebeldes | Soberanía Alimentaria</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Layout específico para index con aside izquierdo */
+        .page-layout {
+            display: flex;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        .sidebar-left {
+            flex: 0 0 300px;
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border-left: 5px solid var(--color-earth);
+        }
+
+        .sidebar-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            display: block;
+        }
+
+        .sidebar-text {
+            font-size: 0.95rem;
+            color: var(--color-text);
+            line-height: 1.6;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        main {
+            flex: 1;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Responsive: En móviles el aside se mueve arriba */
+        @media (max-width: 900px) {
+            .page-layout {
+                flex-direction: column;
+                padding: 2rem 1.5rem;
+                gap: 2rem;
+            }
+            .sidebar-left {
+                flex: none;
+                width: 100%;
+                position: static;
+                order: -1;
+            }
+        }
+    </style>
+    <!-- Precarga la fuente del logo para eliminar el parpadeo -->
+<link rel="preload" href="indiano.otf" as="font" type="font/otf" crossorigin>
+</head>
+<body class="page-home">
+    <!-- HEADER RAÍCES REBELDES -->
+    <header class="raícesrebeldes-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <a href="index.html" class="brand-title">
+                        <span>R</span><span>a</span><span>í</span><span>c</span><span>e</span><span>s</span>
+                        </a>
+                </div>
+                <button class="mobile-toggle" aria-label="Abrir menú">☰</button>
+                
+                <!-- MENÚ EXACTO COMO LO SOLICITASTE -->
+                <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="iniciativa.html">Acerca de la Iniciativa</a></li>
+                    <li><a href="juegos.html">¡Juega e Interactúa!</a></li>
+                    <li><a href="referencias.html">Referencias</a></li>
+                    <li><a href="cuestionario.html">Cuestionario</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div class="hero-content">
+                <span class="hero-subtitle">CULTIVANDO AUTONOMÍA DESDE LA RAÍZ</span>
+                <h1 class="hero-title">SOBERANÍA ALIMENTARIA</h1>
+                <p class="hero-tagline">* DESDE LA TIERRA HASTA TU MESA *</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL CON ASIDE IZQUIERDO -->
+    <div class="page-layout">
+        
+        <!-- ASIDE IZQUIERDO -->
+        <aside class="sidebar-left">
+            <!-- REEMPLAZA "tu-imagen-aqui.jpg" CON LA RUTA REAL DE TU IMAGEN -->
+            <img src="images/aside1.jpeg" alt="Mujer Indígena" class="sidebar-image">
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main>
+            <div class="content-section">
+                <div class="fade-in">
+                    <h2>🌱 Bienvenido a Raíces Rebeldes</h2>
+                    <p>Raíces Rebeldes es una idea que surge a partir de la necesidad de reconectar a las comunidades con su territorio, recuperar los saberes ancestrales y construir sistemas alimentarios justos, diversos y sostenibles.</p>
+                    <p>Somos una plataforma donde encontrarás información práctica y reflexiva sobre soberanía alimentaria, agroecología, conservación de semillas tradicionales y espacios comunitarios de aprendizaje.</p>
+                </div>
+                
+                <div class="fade-in">
+                    <h2>🌾 ¿Qué es la Soberanía Alimentaria?</h2>
+                    <p>Más allá del simple acceso a los alimentos, la soberanía alimentaria es el derecho de los pueblos a decidir qué producir, cómo distribuirlo y qué consumir. Frente a un modelo agroindustrial que prioriza la exportación y el uso intensivo de recursos, promovemos la autonomía local, la diversidad de cultivos y el fortalecimiento de los mercados comunitarios.</p>
+                </div>
+                
+                <div class="fade-in">
+                    <h2>🌿 Agroecología y Saberes Ancestrales</h2>
+                    <p>La agroecología propone rediseñar nuestros sistemas productivos trabajando con la naturaleza, no contra ella. A través de la diversificación de cultivos, el uso responsable de los recursos y la recuperación de prácticas como la <em>chagra</em>, el <em>tul</em> y el <em>yatul</em>, buscamos equilibrar producción, cultura y territorio.</p>
+                </div>
+                
+                <div class="fade-in">
+                    <h2>🍲 Comunidad y Cocinas que Transforman</h2>
+                    <p>La cocina tradicional no solo nutre el cuerpo: es un espacio de encuentro, transmisión de saberes y fortalecimiento de la identidad. Recuperar nuestras recetas y formas de preparar los alimentos es también un acto de soberanía, que nos reconecta con la tierra, con quienes la trabajan y con las generaciones futuras.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Raíces Rebeldes - Plataforma de Soberanía Alimentaria y Cocina Tradicional</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

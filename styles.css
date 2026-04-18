@@ -1,0 +1,510 @@
+/* =========================================
+   FUENTE LOCAL SOLO PARA EL LOGO
+========================================= */
+@font-face {
+  font-family: 'Indiano';
+  src: url('indiano.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* 🟢 PALETA "Raíces Rebeldes" - Basada en los tonos seleccionados */
+  --color-primary: #4b5320; 
+  --color-secondary: #9b2323; 
+  --color-accent: #d2b306;   
+  --color-earth: #EBC985;    
+
+  /* Neutros */
+  --color-bg: #f8f5f0;
+  --color-text: #1b2e0b;      /* Verde muy oscuro casi negro para texto (legibilidad) */
+  --color-text-light: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-bg) url('images/background.png') repeat;
+  background-size: 450px 450px;
+  background-attachment: fixed;
+  color: var(--color-text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(248, 245, 240, 0.85);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== HEADER ========== */
+.raícesrebeldes-header {
+  position: relative;
+  background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+              url('images/banner.jpeg') center/cover no-repeat,
+              #1a362b;
+  min-height: 35vh;
+  max-height: 55vh;
+  padding-bottom: 2rem; /* 👈 Extiende el fondo ~2 cm hacia abajo */
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.raícesrebeldes-header .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ========== NAVBAR OPTIMIZADA ========== */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 0 0.5rem; /* 👈 Top | Horizontal | Bottom (ajusta el último valor) */
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  position: relative;
+}
+
+.navbar-brand {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+/* ========== LOGO MULTICOLOR ========== */
+.navbar-brand .brand-title {
+  font-family: 'Indiano', 'Segoe UI', system-ui, sans-serif;
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  letter-spacing: 5px;
+  line-height: 1.0;
+  font-weight: 500;
+  text-decoration: none;
+  color: unset; /* Elimina el color blanco heredado */
+}
+
+/* Cada letra como bloque independiente */
+.navbar-brand .brand-title span {
+  display: inline-block;
+  text-shadow: 0 1px 5px rgb(0, 0, 0); /* Sombra sutil para contraste */
+  transition: transform 0.3s ease;
+}
+
+/* 🎨 NUEVA PALETA DE COLORES - Logo Raíces Rebeldes */
+/*  1. R - Verde Oliva Oscuro */
+.navbar-brand .brand-title span:nth-child(1) { color: #555d26; }
+
+/*  2. a - Amarillo */
+.navbar-brand .brand-title span:nth-child(2) { color: #E5BE01; }
+
+/*  3. l - Amarillo Mostaza */
+.navbar-brand .brand-title span:nth-child(3) { color: #EBC985; }
+
+/*  4. a - Rojo */
+.navbar-brand .brand-title span:nth-child(4) { color: #9b2323; }
+
+/*  5. t - Verde Oliva Oscuro (Repite el 1) */
+.navbar-brand .brand-title span:nth-child(5) { color: #4b5320; }
+
+/*  6. h - Amarillo (Repite el 2) */
+.navbar-brand .brand-title span:nth-child(6) { color: #E5BE01; }
+
+/*  7. e - Amarillo Mostaza (Repite el 3) */
+.navbar-brand .brand-title span:nth-child(7) { color: #EBC985; }
+
+/*  8. a - Rojo (Repite el 4) */
+.navbar-brand .brand-title span:nth-child(8) { color: #9b2323; }
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 0.5rem;          /* Espacio más ajustado entre ítems */
+  flex-wrap: nowrap;    /* Obliga a mantenerse en una línea */
+  align-items: center;
+}
+
+.nav-menu a {
+  font-size: 1.0rem;    /* Texto reducido pero legible */
+  padding: 0.3rem 0.5rem; /* Relleno interno más pequeño */
+  white-space: nowrap;  /* Evita que los textos se partan */
+  letter-spacing: 0.2px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.nav-menu a:hover, .nav-menu a.active {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+}
+
+.hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 👈 Cambiado de 'center' a 'flex-start' */
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 1rem 2rem; /* 👈 El PRIMER valor controla la altura exacta */
+  color: white;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+  text-shadow: 0 4px 14px rgba(0,0,0,0.45);
+}
+
+.hero-tagline {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  opacity: 0.85;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 0.8rem;
+}
+
+/* ========== MAIN ========== */
+main {
+  flex: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 1.5rem;
+  width: 100%;
+  z-index: 1;
+}
+
+.content-section > div {
+  background: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--color-earth);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+.content-section > div.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content-section h2 {
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.content-section p, .content-section ul {
+  margin-top: 0.5rem;
+  line-height: 1.7;
+}
+
+.content-section ul {
+  margin-left: 1.5rem;
+}
+
+/* ========== FOOTER ========== */
+footer {
+  background: var(--color-earth);
+  color: #555d26;
+  text-align: center;
+  padding: 1.2rem 1rem;
+  margin-top: auto; /* ✅ Empuja al final sin romper el layout */
+  width: 100%;
+  z-index: 1;
+}
+
+/* ========== BOTONES ========== */
+a.doc-type, .doc-type {
+  display: inline-block;
+  background: var(--color-earth);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  vertical-align: middle;
+  letter-spacing: 0.5px;
+}
+
+a.doc-type:hover, .doc-type:hover {
+  background: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.btn-referencia {
+  display: block;
+  background: var(--color-earth);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.btn-referencia:hover {
+  background: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-marco-teorico {
+  display: inline-block;
+  background: var(--color-earth);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(138,90,68,0.3);
+  transition: all 0.3s ease;
+  border: 2px solid var(--color-earth);
+}
+
+.btn-marco-teorico:hover {
+  background: transparent;
+  color: var(--color-earth);
+  transform: translateY(-2px);
+}
+
+/* ========== BANNERS POR PÁGINA ========== */
+body.page-home .raícesrebeldes-header {
+  background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+              url('images/banner-home.jpeg') center/cover no-repeat, #1a362b;
+}
+body.page-contact .raícesrebeldes-header {
+  background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+              url('images/banner-contacto.jpeg') center/cover no-repeat, #1a362b;
+}
+body.page-quiz .raícesrebeldes-header {
+  background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+              url('images/banner-quiz.jpg') center/cover no-repeat, #1a362b;
+}
+body.page-references .raícesrebeldes-header {
+  background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+              url('images/banner-references.jpeg') center/cover no-repeat, #1a362b;
+}
+body.page-juegos .raícesrebeldes-header {
+  background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+              url('images/banner-juegos.jpeg') center/cover no-repeat, #1a362b;
+}
+body.page-iniciativa .raícesrebeldes-header {
+  background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+              url('images/banner-iniciativa.jpg') center/cover no-repeat, #1a362b;
+}
+
+/* ========== ESTILOS JUEGOS ========== */
+.game-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #222;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.game-wrapper canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #87ceeb;
+  touch-action: none;
+}
+.game-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 54, 43, 0.85);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  z-index: 10;
+}
+.game-overlay h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.game-overlay p { margin: 0.3rem 0 1rem; font-size: 0.95rem; opacity: 0.9; }
+.game-overlay button {
+  padding: 0.8rem 2rem;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.game-overlay button:hover { transform: translateY(-2px); }
+.hidden { display: none !important; }
+
+.touch-controls {
+  display: none;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  justify-content: center;
+  background: #f8f9fa;
+}
+.touch-btn {
+  padding: 1rem;
+  background: #e2e8f0;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  flex: 1;
+  cursor: pointer;
+}
+.region-btn {
+  padding: 0.8rem;
+  background: white;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-text);
+  transition: 0.2s;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+.region-btn:hover { border-color: var(--color-earth); background: #f0fdf4; }
+.region-btn.correct { background: var(--color-earth); color: white; border-color: var(--color-earth); }
+.region-btn.incorrect { background: #e76f51; color: white; border-color: #e76f51; }
+
+
+/* ========== CENTRADO TÍTULO E INTRO DEL JUEGO ========== */
+.content-section .fade-in h2 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+/* Centra el párrafo descriptivo debajo del título */
+.content-section .fade-in > p,
+.content-section .fade-in .quiz-intro {
+  text-align: center;
+  margin: 0 auto 1.5rem;
+  max-width: 700px;
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+
+/* ========== MEDIA QUERIES ========== */
+@media (max-width: 900px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Ocultar menú por defecto y limpiar todo rastro de lista */
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        order: 3;
+        margin-top: 1rem;
+        padding: 0;          /* 🔧 Elimina cualquier sangría fantasma */
+        list-style: none;    /* 🔧 Elimina viñetas si las hubiera */
+        gap: 0.5rem;
+    }
+
+    .nav-menu.open {
+        display: flex;
+    }
+
+    /* Botón hamburguesa seguro */
+    .mobile-toggle {
+        display: block;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 0.4rem 0.7rem;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 20;
+    }
+
+    /* Limpieza de estilos de los enlaces en móvil */
+    .nav-menu li {
+        width: 100%;
+    }
+
+    .nav-menu a {
+        display: block;
+        padding: 0.6rem 1rem;
+        font-size: 1.1rem;
+        text-align: left;
+        border-radius: 6px;
+    }
+    
+    .navbar-brand .brand-title {
+        font-size: clamp(2.2rem, 8vw, 3rem);
+    }
+}

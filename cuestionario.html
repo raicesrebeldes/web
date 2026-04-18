@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+     <link rel="icon" href="images/favicon.ico" type="image/ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario | Raíces Rebeldes</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos específicos para el Cuestionario Mejorado */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            border-left: 5px solid var(--color-earth);
+        }
+
+        .question-block {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-block:last-of-type {
+            border-bottom: none;
+        }
+
+        .question-title {
+            color: var(--color-primary);
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .option-label:hover {
+            border-color: var(--color-secondary);
+            background: #f0fdf4;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: var(--color-earth);
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: var(--color-earth);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 2rem;
+        }
+
+        .btn-submit:hover {
+            background: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Estilos del Panel de Resultados */
+        #result-panel {
+            display: none; /* Oculto por defecto */
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 2rem;
+            border: 2px solid var(--color-secondary);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            margin: 1rem 0;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: var(--color-text);
+            margin-bottom: 2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-email {
+            background: var(--color-primary);
+            color: white;
+            border: 2px solid var(--color-primary);
+        }
+
+        .btn-copy {
+            background: white;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+    </style>
+     <!-- Precarga la fuente del logo para eliminar el parpadeo -->
+<link rel="preload" href="indiano.otf" as="font" type="font/otf" crossorigin>
+</head>
+<body class="page-quiz">
+    <!-- HEADER RAÍCES REBELDES -->
+    <header class="raícesrebeldes-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <a href="index.html" class="brand-title">
+                        <span>R</span><span>a</span><span>i</span><span>c</span><span>e</span><span>s</span>
+                    </a>
+                </div>
+                <button class="mobile-toggle" aria-label="Abrir menú">☰</button>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="iniciativa.html">Acerca de la Iniciativa</a></li>
+                    <li><a href="juegos.html">¡Juega e Interactúa!</a></li>
+                    <li><a href="referencias.html">Referencias</a></li>
+                    <li><a href="cuestionario.html">Cuestionario</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div class="hero-content">
+                <span class="hero-subtitle">PON A PRUEBA TUS CONOCIMIENTOS</span>
+                <h1 class="hero-title">CUESTIONARIO</h1>
+                <p class="hero-tagline">* APRENDE Y TRANSFORMA *</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <div class="content-section">
+            <div class="fade-in">
+                <h2 style="text-align: center;">Cuestionario de Conocimiento</h2>
+                <p style="text-align: center; margin-bottom: 2rem; color: #666;">Responde las preguntas basadas en el Marco Teórico de Raíces Rebeldes.</p>
+                
+                <div class="quiz-container">
+                    <form id="quizForm">
+                        
+                        <!-- Pregunta 1 -->
+                        <div class="question-block">
+                            <div class="question-title">1. Según Calderón Farfán et al. (2022), ¿qué es la soberanía alimentaria?</div>
+                            <div class="options-grid">
+                                <label class="option-label"><input type="radio" name="q1" value="a"> El derecho a comprar alimentos importados baratos.</label>
+                                <label class="option-label"><input type="radio" name="q1" value="b"> El derecho de los pueblos a decidir qué producir, distribuir y consumir generando autonomía.</label>
+                                <label class="option-label"><input type="radio" name="q1" value="c"> La producción masiva de alimentos para exportación.</label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 2 -->
+                        <div class="question-block">
+                            <div class="question-title">2. ¿Qué crisis genera el modelo agroindustrial según Altieri (2010)?</div>
+                            <div class="options-grid">
+                                <label class="option-label"><input type="radio" name="q2" value="a"> Exceso de mano de obra rural y abundancia de recursos.</label>
+                                <label class="option-label"><input type="radio" name="q2" value="b"> Pobreza rural, hambre, migración y degradación ambiental.</label>
+                                <label class="option-label"><input type="radio" name="q2" value="c"> Reducción del uso de energía fósil.</label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 3 -->
+                        <div class="question-block">
+                            <div class="question-title">3. ¿Qué es la agrobiodiversidad?</div>
+                            <div class="options-grid">
+                                <label class="option-label"><input type="radio" name="q3" value="a"> El conjunto de plantas, animales y microorganismos que permiten el funcionamiento de los sistemas agrícolas.</label>
+                                <label class="option-label"><input type="radio" name="q3" value="b"> El uso exclusivo de semillas modificadas genéticamente.</label>
+                                <label class="option-label"><input type="radio" name="q3" value="c"> La plantación de un solo cultivo en grandes extensiones (monocultivo).</label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 4 -->
+                        <div class="question-block">
+                            <div class="question-title">4. ¿Por qué son importantes las semillas tradicionales?</div>
+                            <div class="options-grid">
+                                <label class="option-label"><input type="radio" name="q4" value="a"> Porque son más baratas en el mercado internacional.</label>
+                                <label class="option-label"><input type="radio" name="q4" value="b"> Porque no requieren agua para crecer.</label>
+                                <label class="option-label"><input type="radio" name="q4" value="c"> Porque representan la memoria histórica y cultural de las comunidades y su relación con el territorio.</label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 5 -->
+                        <div class="question-block">
+                            <div class="question-title">5. Espacios como la 'Chagra', el 'Tul' y el 'Yatul' permiten:</div>
+                            <div class="options-grid">
+                                <label class="option-label"><input type="radio" name="q5" value="a"> La producción de alimentos y la transmisión de saberes ancestrales.</label>
+                                <label class="option-label"><input type="radio" name="q5" value="b"> La industrialización del campo.</label>
+                                <label class="option-label"><input type="radio" name="q5" value="c"> El aislamiento de las comunidades indígenas.</label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 6 -->
+                        <div class="question-block">
+                            <div class="question-title">6. ¿Qué propone la agroecología frente al modelo agroindustrial?</div>
+                            <div class="options-grid">
+                                <label class="option-label"><input type="radio" name="q6" value="a"> Aumentar el uso de insumos químicos externos.</label>
+                                <label class="option-label"><input type="radio" name="q6" value="b"> El rediseño de los sistemas agrícolas mediante la diversificación y la reducción de insumos externos.</label>
+                                <label class="option-label"><input type="radio" name="q6" value="c"> Copiar el modelo de agricultura orgánica orientada solo a la exportación.</label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 7 -->
+                        <div class="question-block">
+                            <div class="question-title">7. ¿Cuál es el rol de las cocinas tradicionales según el Ministerio de Cultura?</div>
+                            <div class="options-grid">
+                                <label class="option-label"><input type="radio" name="q7" value="a"> Son espacios de encuentro social que fortalecen la identidad y los vínculos comunitarios.</label>
+                                <label class="option-label"><input type="radio" name="q7" value="b"> Son lugares anticuados que deben modernizarse rápidamente.</label>
+                                <label class="option-label"><input type="radio" name="q7" value="c"> Solo sirven para preparar alimentos rápidos.</label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 8 -->
+                        <div class="question-block">
+                            <div class="question-title">8. ¿Qué limitación enfrenta la implementación de la soberanía alimentaria?</div>
+                            <div class="options-grid">
+                                <label class="option-label"><input type="radio" name="q8" value="a"> La falta de interés de las comunidades.</label>
+                                <label class="option-label"><input type="radio" name="q8" value="b"> La concentración del poder político y económico.</label>
+                                <label class="option-label"><input type="radio" name="q8" value="c"> El exceso de tierras disponibles para todos.</label>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-submit" onclick="calculateScore()">Enviar Respuestas y Guardar Resultados</button>
+                    </form>
+
+                    <!-- PANEL DE RESULTADOS (Oculto inicialmente) -->
+                    <div id="result-panel">
+                        <h2 style="color: var(--color-primary);">¡Resultados Obtenidos!</h2>
+                        <div class="result-score" id="score-display">0/8</div>
+                        <p class="result-message" id="message-display">Mensaje de feedback</p>
+                        
+                        <p style="font-size: 0.9rem; color: #777; margin-bottom: 1rem;">Guarda tu avance o compártelo con el equipo investigador:</p>
+                        
+                        <div class="action-buttons">
+                            <a href="#" id="btn-email" class="btn-action btn-email" target="_blank">
+                                📧 Enviar por Correo
+                            </a>
+                            <button onclick="copyResults()" class="btn-action btn-copy">
+                                📋 Copiar Resultados
+                            </button>
+                        </div>
+                        <p id="copy-feedback" style="display:none; color: green; margin-top: 1rem; font-size: 0.9rem;">¡Resultados copiados al portapapeles!</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+       <p>© 2026 Raíces Rebeldes - Plataforma de Soberanía Alimentaria y Cocina Tradicional</p>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <!-- Lógica del Cuestionario -->
+    <script>
+        function calculateScore() {
+            const form = document.getElementById('quizForm');
+            const resultPanel = document.getElementById('result-panel');
+            const scoreDisplay = document.getElementById('score-display');
+            const messageDisplay = document.getElementById('message-display');
+            const emailBtn = document.getElementById('btn-email');
+            
+            // Respuestas correctas
+            const correctAnswers = {
+                q1: 'b', q2: 'b', q3: 'a', q4: 'c',
+                q5: 'a', q6: 'b', q7: 'a', q8: 'b'
+            };
+            
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+            
+            // Verificar respuestas
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selected = form.querySelector(`input[name="q${i}"]:checked`);
+                if (selected && selected.value === correctAnswers[`q${i}`]) {
+                    score++;
+                }
+            }
+            
+            // Calcular porcentaje y mensaje
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let message = "";
+            
+            if (percentage === 100) {
+                message = "¡Excelente! Tienes un dominio completo del marco teórico de Raíces Rebeldes.";
+            } else if (percentage >= 70) {
+                message = "¡Muy bien! Tienes buenos conocimientos, sigue profundizando.";
+            } else {
+                message = "Has completado el cuestionario. Te invitamos a revisar las Referencias para reforzar tus conocimientos.";
+            }
+            
+            // Mostrar resultados
+            scoreDisplay.textContent = `${score}/${totalQuestions} (${percentage}%)`;
+            messageDisplay.textContent = message;
+            resultPanel.style.display = 'block';
+            
+            // Configurar botón de correo
+            const mailSubject = encodeURIComponent(`Resultados Cuestionario Raíces Rebeldes: ${percentage}%`);
+            const mailBody = encodeURIComponent(`Hola,\n\nHe completado el cuestionario de Raíces Rebeldes con los siguientes resultados:\n\nPuntuación: ${score} de ${totalQuestions}\nPorcentaje: ${percentage}%\nMensaje: ${message}\n\nSaludos.`);
+            emailBtn.href = `mailto:julian.munoz@utp.edu.co?subject=${mailSubject}&body=${mailBody}`;
+            
+            // Scroll suave hacia el panel
+            resultPanel.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyResults() {
+            const score = document.getElementById('score-display').textContent;
+            const message = document.getElementById('message-display').textContent;
+            const textToCopy = `Resultados Raíces Rebeldes: ${score} - ${message}`;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const feedback = document.getElementById('copy-feedback');
+                feedback.style.display = 'block';
+                setTimeout(() => { feedback.style.display = 'none'; }, 3000);
+            });
+        }
+    </script>
+</body>
+</html>

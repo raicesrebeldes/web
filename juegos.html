@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+     <link rel="icon" href="images/favicon.ico" type="image/ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juegos | Raíces Rebeldes</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ========== ESTILOS ESPECÍFICOS DEL JUEGO ========== */
+        #game-wrapper {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #f4f6f8;
+        }
+
+        .game-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(5px);
+            padding: 2rem;
+            text-align: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-overlay.hidden { display: none; }
+
+        .game-overlay h2 {
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .game-overlay p {
+            color: #555;
+            margin-bottom: 1.5rem;
+            max-width: 480px;
+            line-height: 1.5;
+        }
+
+        /* Opciones simétricas con Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            width: 100%;
+            max-width: 420px;
+            margin-top: 1rem;
+        }
+
+        .region-btn {
+            padding: 1rem 0.5rem;
+            background: #ffffff;
+            border: 2px solid var(--color-secondary);
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--color-text);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .region-btn:hover:not(:disabled) {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .region-btn.correct {
+            background: var(--color-primary) !important;
+            color: white !important;
+            border-color: var(--color-primary) !important;
+        }
+
+        .region-btn.incorrect {
+            background: #d9534f !important;
+            color: white !important;
+            border-color: #d9534f !important;
+        }
+
+        .region-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* HUD del juego */
+        .hud {
+            position: absolute;
+            top: 15px; left: 15px; right: 15px;
+            display: flex; justify-content: space-between;
+            background: rgba(255,255,255,0.92);
+            padding: 8px 16px; border-radius: 8px;
+            font-weight: bold; color: var(--color-primary);
+            font-size: 0.9rem; z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .hud.hidden { display: none; }
+
+        /* Botón principal */
+        .game-btn {
+            background: var(--color-earth);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 0.5rem;
+        }
+
+        .game-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(138,90,68,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+            #game-wrapper { border-radius: 12px; }
+            .game-overlay { padding: 1.5rem; }
+        }
+        
+    </style>
+     <!-- Precarga la fuente del logo para eliminar el parpadeo -->
+<link rel="preload" href="indiano.otf" as="font" type="font/otf" crossorigin>
+</head>
+<body class="page-juegos">
+    <!-- HEADER RAÍCES REBELDES -->
+    <header class="raícesrebeldes-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                       <a href="index.html" class="brand-title">
+                        <span>R</span><span>a</span><span>i</span><span>c</span><span>e</span><span>s</span>
+                    </a>
+                </div>
+                <button class="mobile-toggle" aria-label="Abrir menú">☰</button>
+                 <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="iniciativa.html">Acerca de la Iniciativa</a></li>
+                    <li><a href="juegos.html">¡Juega e Interactúa!</a></li>
+                    <li><a href="referencias.html">Referencias</a></li>
+                    <li><a href="cuestionario.html">Cuestionario</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div class="hero-content">
+                <span class="hero-subtitle">¡APRENDE JUGANDO!🎮</span>
+                <h1 class="hero-title">QUIZ DE REGIONES</h1>
+                <p class="hero-tagline">* IDENTIFICA EL ORIGEN DE NUESTROS SABORES *</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <div class="content-section">
+            <div class="fade-in">
+                <h2>🍲 ¿De qué región viene este plato?</h2>
+                <!-- CONTENEDOR DEL JUEGO -->
+                <div id="game-wrapper">
+                    <canvas id="gameCanvas" width="800" height="600"></canvas>
+                    
+                    <div class="hud hidden" id="hud">
+                        <span>Puntaje: <span id="scoreDisplay">0</span></span>
+                        <span>Pregunta <span id="qCurrent">1</span> / <span id="qTotal">10</span></span>
+                        <span>Racha: <span id="streakDisplay">0</span></span>
+                    </div>
+
+                    <!-- PANTALLA DE INICIO -->
+                    <div class="game-overlay" id="startOverlay">
+                        <h2>¿De qué región soy? 🇨🇴</h2>
+                        <p>Identifica la región colombiana de cada plato típico</p>
+                        <button class="game-btn" onclick="startGame()">¡Jugar Ahora!</button>
+                    </div>
+
+                    <!-- PANTALLA DE PREGUNTA -->
+                    <div class="game-overlay hidden" id="quizOverlay">
+                        <h2 id="questionText">Pregunta 1 de 10</h2>
+                        <div id="dishEmoji" style="font-size: 4rem; margin: 0.5rem 0;">🍽️</div>
+                        <p id="dishName" style="font-size: 1.3rem; font-weight: bold; margin: 0.5rem 0;">Cargando...</p>
+                        <p id="dishDesc" style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem; max-width: 90%;">Descripción del plato...</p>
+                        
+                        <div class="options-grid" id="optionsContainer">
+                            <button class="region-btn" data-region="Andina">Región Andina</button>
+                            <button class="region-btn" data-region="Caribe">Región Caribe</button>
+                            <button class="region-btn" data-region="Pacífica">Región Pacífica</button>
+                            <button class="region-btn" data-region="Llanera">Llanera & Amazonía</button>
+                        </div>
+                    </div>
+
+                    <!-- PANTALLA DE RESULTADOS -->
+                    <div class="game-overlay hidden" id="resultsOverlay">
+                        <h2>¡Juego terminado!</h2>
+                        <div style="font-size: 3rem; margin: 1rem 0;">🏆</div>
+                        <p style="font-size: 1.4rem; margin-bottom: 1.5rem;">Puntaje Final: <strong id="finalScore">0</strong> pts</p>
+                        <button class="game-btn" onclick="restartGame()">Jugar de nuevo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+<p>© 2026 Raíces Rebeldes - Plataforma de Soberanía Alimentaria y Cocina Tradicional</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="script.js"></script>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Base de datos de platos CON EMOJIS Y DESCRIPCIONES SUTILES
+        const platos = [
+            { 
+                nombre: "Arepa de choclo", 
+                region: "Andina", 
+                desc: "Preparación dulce y suave elaborada con cereal tierno, asada o al vapor, acompañante clásico de las bebidas calientes.", 
+                emoji: "🌽" 
+            },
+            { 
+                nombre: "Amasijos", 
+                region: "Andina", 
+                desc: "Variedad de panes horneados a base de almidón o raíz, crujientes por fuera y tiernos por dentro, ideales para el desayuno.", 
+                emoji: "🥐" 
+            },
+            { 
+                nombre: "Tamales", 
+                region: "Andina", 
+                desc: "Masa sazonada rellena de granos y proteína, envuelta en hojas naturales y cocida lentamente al vapor.", 
+                emoji: "🫔" 
+            },
+            { 
+                nombre: "Cazuela de mariscos", 
+                region: "Caribe", 
+                desc: "Guiso cremoso que combina frutos del mar con especias aromáticas y un toque de leche vegetal.", 
+                emoji: "🦐" 
+            },
+            { 
+                nombre: "Cocadas", 
+                region: "Pacífica", 
+                desc: "Dulce tradicional elaborado con fruto tropical rallado y endulzantes naturales, cocido hasta obtener una textura firme y dorada.", 
+                emoji: "🥥" 
+            },
+            { 
+                nombre: "Mote de queso", 
+                region: "Caribe", 
+                desc: "Sopa espesa y reconfortante preparada con raíz comestible y queso fresco regional, ideal para el clima cálido.", 
+                emoji: "🧀" 
+            },
+            { 
+                nombre: "Chicha", 
+                region: "Andina", 
+                desc: "Bebida ancestral fermentada o cocida a base de cereales y frutas, servida tradicionalmente en recipientes de barro.", 
+                emoji: "🍶" 
+            },
+            { 
+                nombre: "Bollos", 
+                region: "Caribe", 
+                desc: "Masa compacta de cereal o fruto, cocida envuelta en hojas secas, con sabor neutro y textura firme.", 
+                emoji: "🌾" 
+            },
+            { 
+                nombre: "Mazamorra", 
+                region: "Andina", 
+                desc: "Preparación líquida de cereal blanco cocido, acompañada de endulzante natural o leche, servida tibia en tazas de cerámica.", 
+                emoji: "🥣" 
+            },
+            { 
+                nombre: "Envueltos de maíz",
+                region: "Andina",
+                desc: "Masa de maíz sazonada, rellena de ingredientes variados, envuelta en hojas de maíz y cocida al vapor, con textura suave y sabor reconfortante.", 
+                emoji: "🌽"
+            }
+        ];
+
+        let currentPlatoIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let shuffledPlatos = [];
+        const regionBtns = document.querySelectorAll('.region-btn');
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function startGame() {
+            score = 0;
+            streak = 0;
+            currentPlatoIndex = 0;
+            shuffledPlatos = shuffle([...platos]);
+            
+            document.getElementById('startOverlay').classList.add('hidden');
+            document.getElementById('resultsOverlay').classList.add('hidden');
+            document.getElementById('hud').classList.remove('hidden');
+            document.getElementById('quizOverlay').classList.remove('hidden');
+            
+            updateHUD();
+            loadQuestion();
+            drawBackground();
+        }
+
+        function loadQuestion() {
+            if (currentPlatoIndex >= shuffledPlatos.length) {
+                showResults();
+                return;
+            }
+            
+            const plato = shuffledPlatos[currentPlatoIndex];
+            document.getElementById('questionText').textContent = `Pregunta ${currentPlatoIndex + 1} de ${shuffledPlatos.length}`;
+            document.getElementById('dishEmoji').textContent = plato.emoji;
+            document.getElementById('dishName').textContent = plato.nombre;
+            document.getElementById('dishDesc').textContent = plato.desc;
+            
+            regionBtns.forEach(btn => {
+                btn.className = 'region-btn';
+                btn.disabled = false;
+            });
+            
+            updateHUD();
+        }
+
+        function checkAnswer(selectedRegion, btnElement) {
+            const correctRegion = shuffledPlatos[currentPlatoIndex].region;
+            
+            regionBtns.forEach(btn => btn.disabled = true);
+            
+            if (selectedRegion === correctRegion) {
+                btnElement.classList.add('correct');
+                score += 10 + (streak * 2);
+                streak++;
+            } else {
+                btnElement.classList.add('incorrect');
+                streak = 0;
+                document.querySelector(`.region-btn[data-region="${correctRegion}"]`).classList.add('correct');
+            }
+            
+            currentPlatoIndex++;
+            
+            setTimeout(() => {
+                loadQuestion();
+            }, 1200);
+        }
+
+        function showResults() {
+            document.getElementById('quizOverlay').classList.add('hidden');
+            document.getElementById('hud').classList.add('hidden');
+            document.getElementById('resultsOverlay').classList.remove('hidden');
+            document.getElementById('finalScore').textContent = score;
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        function updateHUD() {
+            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('streakDisplay').textContent = streak;
+            document.getElementById('qCurrent').textContent = currentPlatoIndex + 1;
+            document.getElementById('qTotal').textContent = shuffledPlatos.length;
+        }
+
+        function drawBackground() {
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#e8f0f2');
+            gradient.addColorStop(1, '#f8f9fa');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#d4e8d9';
+            ctx.beginPath();
+            ctx.arc(150, 150, 60, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(650, 450, 80, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        regionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                checkAnswer(btn.getAttribute('data-region'), btn);
+            });
+        });
+
+        drawBackground();
+    </script>
+</body>
+</html>

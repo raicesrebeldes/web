@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="images/favicon.ico" type="image/ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Raíces Rebeldes</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* =========================================
+           ESTILOS ESPECÍFICOS - PÁGINA DE CONTACTO
+           ========================================= */
+        
+        .contact-intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        .contact-intro h2 {
+            color: var(--color-primary);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-intro p {
+            color: #555;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* Grid simétrico para las tarjetas */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        /* Tarjetas elegantes */
+        .contact-card {
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--color-earth);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .contact-card h3 {
+            color: var(--color-primary);
+            font-size: 1.35rem;
+            margin: 0;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #eaeaea;
+            font-weight: 600;
+        }
+
+        /* Detalles de información alineados */
+        .info-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--color-earth);
+            font-weight: 700;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
+        .contact-message {
+            line-height: 1.7;
+            color: #4a4a4a;
+            margin: 0;
+        }
+
+        /* Botón de contacto elegante */
+        .btn-contact {
+            display: inline-block;
+            padding: 0.9rem 2rem;
+            background: var(--color-primary);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid var(--color-primary);
+            margin-top: auto;
+            cursor: pointer;
+        }
+
+        .btn-contact:hover {
+            background: transparent;
+            color: var(--color-primary);
+        }
+
+        /* Responsive: una columna en móviles */
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .contact-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+     <!-- Precarga la fuente del logo para eliminar el parpadeo -->
+<link rel="preload" href="indiano.otf" as="font" type="font/otf" crossorigin>
+</head>
+<body class="page-contact">
+    <!-- HEADER -->
+    <header class="raícesrebeldes-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                       <a href="index.html" class="brand-title">
+                        <span>R</span><span>a</span><span>i</span><span>c</span><span>e</span><span>s</span>
+                </div>
+                <button class="mobile-toggle" aria-label="Abrir menú">☰</button>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="iniciativa.html">Acerca de la Iniciativa</a></li>
+                    <li><a href="juegos.html">¡Juega e Interactúa!</a></li>
+                    <li><a href="referencias.html">Referencias</a></li>
+                    <li><a href="cuestionario.html">Cuestionario</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="hero-content">
+                <span class="hero-subtitle">CONEXIÓN COMUNITARIA</span>
+                <h1 class="hero-title">CONTACTO</h1>
+                <p class="hero-tagline">* TU VOZ CULTIVA CAMBIOS *</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <div class="content-section">
+            <div class="fade-in">
+                <div class="contact-intro">
+                    <h2>Información de Contacto</h2>
+                    <p>Si tienes consultas académicas, propuestas de colaboración o deseas conocer más sobre Raíces Rebeldes, puedes comunicarte directamente a través de los siguientes canales.</p>
+                </div>
+
+                <div class="contact-grid">
+                    <!-- Tarjeta 1: Datos de Contacto -->
+                    <div class="contact-card">
+                        <h3>Datos de Contacto</h3>
+                        
+                        <div class="info-row">
+                            <span class="info-label">Nombre</span>
+                            <span class="info-value">Andrés Muñoz</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="info-label">Formación Académica</span>
+                            <span class="info-value">Estudiante de Licenciatura en Tecnología</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="info-label">Rol en el Proyecto</span>
+                            <span class="info-value">Investigación</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="info-label">Institución</span>
+                            <span class="info-value">Universidad Tecnológica de Pereira</span>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 2: Canal de Comunicación -->
+                    <div class="contact-card">
+                        <h3>Canal de Comunicación</h3>
+                        
+                        <p class="contact-message">
+                            Para garantizar una respuesta oportuna, te invitamos a enviar tu consulta por correo electrónico. Indica el asunto de tu mensaje y detalla brevemente el motivo de tu contacto.
+                        </p>
+                        
+                        <div class="info-row">
+                            <span class="info-label">Correo Electrónico</span>
+                            <span class="info-value">julian.munoz@utp.edu.co</span>
+                        </div>
+                        
+                        <a href="mailto:julian.munoz@utp.edu.co" class="btn-contact">Enviar Mensaje por Correo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Raíces Rebeldes - Plataforma de Soberanía Alimentaria y Cocina Tradicional</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

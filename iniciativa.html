@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+     <link rel="icon" href="images/favicon.ico" type="image/ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Iniciativa | Raíces Rebeldes</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Layout con aside derecho */
+        .page-layout {
+            display: flex;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        /* El aside se posiciona a la derecha naturalmente por el orden en HTML */
+        .sidebar-right {
+            flex: 0 0 300px;
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border-right: 5px solid var(--color-earth);
+        }
+
+        .sidebar-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* El main ocupa el espacio restante a la izquierda */
+        main {
+            flex: 1;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Responsive: En móviles el aside se mueve abajo del contenido */
+        @media (max-width: 900px) {
+            .page-layout {
+                flex-direction: column;
+                padding: 2rem 1.5rem;
+                gap: 2rem;
+            }
+            .sidebar-right {
+                flex: none;
+                width: 100%;
+                position: static;
+                order: 1; /* Se muestra después del contenido en móvil */
+            }
+        }
+    </style>
+     <!-- Precarga la fuente del logo para eliminar el parpadeo -->
+<link rel="preload" href="indiano.otf" as="font" type="font/otf" crossorigin>
+</head>
+<!-- ✅ AQUÍ SE AGREGÓ LA CLASE PARA QUE FUNCIONE EL BANNER -->
+<body class="page-iniciativa">
+    <!-- HEADER RAÍCES REBELDES -->
+    <header class="raícesrebeldes-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                       <a href="index.html" class="brand-title">
+                        <span>R</span><span>a</span><span>i</span><span>c</span><span>e</span><span>s</span>
+                    </a>
+                </div>
+                <button class="mobile-toggle" aria-label="Abrir menú">☰</button>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="iniciativa.html">Acerca de la Iniciativa</a></li>
+                    <li><a href="juegos.html">¡Juega e Interactúa!</a></li>
+                    <li><a href="referencias.html">Referencias</a></li>
+                    <li><a href="cuestionario.html">Cuestionario</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div class="hero-content">
+                <span class="hero-subtitle">CULTIVANDO AUTONOMÍA DESDE LA RAÍZ</span>
+                <h1 class="hero-title">NUESTRA INICIATIVA</h1>
+                <p class="hero-tagline">* COMPROMETIDOS CON LA TIERRA *</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL CON ASIDE DERECHO -->
+    <div class="page-layout">
+        
+        <!-- MAIN CONTENT (Izquierda) -->
+        <main>
+            <div class="content-section">
+                <div class="fade-in">
+                    <h2>🌍 La Problemática Actual</h2>
+                    <p>La alimentación hoy no es solo un tema de acceso, sino de sistemas productivos, cultura y territorio. El modelo agroindustrial ha generado una crisis caracterizada por pobreza rural, degradación ambiental y pérdida de autonomía. Frente a la concentración de mercados y la expansión de monocultivos, surge la necesidad de recuperar el control comunitario sobre lo que producimos y consumimos.</p>
+                </div>
+                
+                <div class="fade-in">
+                    <h2>🌾 Agrobiodiversidad y Semillas Tradicionales</h2>
+                    <p>La agrobiodiversidad incluye plantas, animales y microorganismos que sostienen nuestros sistemas agrícolas. Las semillas tradicionales son la memoria viva de las comunidades: su pérdida implica olvidar saberes, prácticas culturales y formas de relación con el territorio. Conservarlas es garantizar el "buen vivir" y la continuidad de sistemas alimentarios resilientes.</p>
+                </div>
+                
+                <div class="fade-in">
+                    <h2>🌱 Agroecología y Prácticas Ancestrales</h2>
+                    <p>La agroecología propone rediseñar la agricultura trabajando con la naturaleza, no contra ella. A través de la diversificación, la reducción de insumos externos y la recuperación de espacios como la chagra (Amazonía), el tul (Andino) y el yatul (Misak), se crean ecosistemas productivos que mantienen la fertilidad del suelo, controlan plagas de forma natural y fortalecen la autonomía local.</p>
+                </div>
+                
+                <div class="fade-in">
+                    <h2>🍲 Cocinas Tradicionales y Soberanía</h2>
+                    <p>La cocina no solo nutre: es un espacio de encuentro, transmisión de saberes y fortalecimiento de identidad. Recuperar prácticas culinarias tradicionales nos reconecta con el origen de los alimentos, con quienes los cultivan y con las generaciones que nos precedieron. Es un acto cotidiano de soberanía y preservación cultural.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- ASIDE DERECHO (Solo Imagen) -->
+        <aside class="sidebar-right">
+            <!-- REEMPLAZA "tu-imagen-iniciativa.jpg" CON LA RUTA DE TU IMAGEN -->
+            <img src="images/aside3.jpg" alt="Iniciativa Ra" class="sidebar-image">
+        </aside>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Raíces Rebeldes - Plataforma de Soberanía Alimentaria y Cocina Tradicional</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
