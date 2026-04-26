@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="images/favicon.ico" type="image/ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estación Cuatro | Raíces Rebeldes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet"/>
+    <link rel="preload" href="indiano.otf" as="font" type="font/otf" crossorigin>
+    <style>
+    :root {
+        --verde-oscuro: #2D5016;
+        --verde-medio: #4A7C2F;
+        --verde-claro: #8AB661;
+        --tierra: #8B5E3C;
+        --tierra-claro: #C49A6C;
+        --crema: #F5EDD6;
+        --crema-oscuro: #E8D5A3;
+        --naranja: #D4722A;
+        --rojo-frijol: #8B2E2E;
+        --amarillo-maiz: #E8B84B;
+        --bg-page: #FBF6EC;
+        --text-dark: #2A1F0E;
+        --text-mid: #5C4020;
+        --shadow: 0 4px 20px rgba(45,80,22,0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Reset para evitar conflictos con styles.css */
+    input, textarea, select {
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    body {
+        font-family: 'Nunito', sans-serif;
+        background: var(--bg-page);
+        color: var(--text-dark);
+        min-height: 100vh;
+    }
+
+
+    main { padding: 0; }
+
+    .content-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .main-nav {
+        background: var(--verde-oscuro);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        gap: 0;
+        overflow-x: auto;
+        border-bottom: 3px solid var(--amarillo-maiz);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .main-nav::-webkit-scrollbar { height: 6px; }
+    .main-nav::-webkit-scrollbar-thumb { background: var(--amarillo-maiz); border-radius: 3px; }
+
+    .nav-btn {
+        flex: 1;
+        min-width: 120px;
+        padding: 16px 12px;
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.7);
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s;
+        border-right: 1px solid rgba(255,255,255,0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+        position: relative;
+    }
+    .nav-btn .nav-icon { font-size: 20px; }
+    .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-btn.active {
+        color: var(--amarillo-maiz);
+        background: rgba(232,184,75,0.12);
+        border-bottom: 3px solid var(--amarillo-maiz);
+    }
+
+    .section { display: none; }
+    .section.active { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero-band {
+        padding: 56px 32px 44px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 0 24px 24px;
+        margin-bottom: 2rem;
+    }
+    .hero-band::before {
+        content: '';
+        position: absolute; inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-band h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.4rem;
+        line-height: 1.2;
+        position: relative;
+        margin-bottom: 1rem;
+    }
+    .hero-band p {
+        max-width: 680px;
+        margin: 0 auto;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        opacity: 0.95;
+        position: relative;
+    }
+    .band-verde { background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 100%); color: var(--crema); }
+    .band-tierra { background: linear-gradient(135deg, var(--tierra) 0%, var(--tierra-claro) 100%); color: var(--crema); }
+    .band-naranja { background: linear-gradient(135deg, var(--naranja) 0%, #e8954a 100%); color: var(--crema); }
+    .band-rojo { background: linear-gradient(135deg, var(--rojo-frijol) 0%, #a94545 100%); color: var(--crema); }
+
+    .phase-tabs {
+        display: flex;
+        border-bottom: 2px solid var(--crema-oscuro);
+        background: #fff;
+        overflow-x: auto;
+        border-radius: 12px 12px 0 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .phase-tab {
+        padding: 14px 24px;
+        background: none;
+        border: none;
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-mid);
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        white-space: nowrap;
+        transition: all 0.2s;
+    }
+    .phase-tab:hover { color: var(--verde-oscuro); background: rgba(74,124,47,0.05); }
+    .phase-tab.active { color: var(--verde-oscuro); border-bottom-color: var(--verde-oscuro); background: rgba(74,124,47,0.08); }
+
+    .phase-panel { display: none; padding: 32px; background: #fff; border-radius: 0 0 12px 12px; box-shadow: var(--shadow); }
+    .phase-panel.active { display: block; animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, var(--crema-oscuro), var(--crema));
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--tierra);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 14px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2.parada-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        color: var(--verde-oscuro);
+        margin-bottom: 10px;
+    }
+    .parada-desc {
+        font-size: 15px;
+        color: var(--text-mid);
+        margin-bottom: 28px;
+        max-width: 720px;
+        line-height: 1.7;
+    }
+
+    .flip-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 28px;
+        margin-top: 12px;
+    }
+    .flip-card {
+        perspective: 1000px;
+        height: 340px;
+        cursor: pointer;
+    }
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    .flip-card:hover .flip-card-inner,
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-face {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    }
+    .flip-front {
+        background: var(--crema);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .flip-front .seed-img {
+        width: 100%; height: 210px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 86px;
+        background: linear-gradient(160deg, var(--verde-claro) 0%, var(--tierra-claro) 100%);
+    }
+    .flip-front .seed-label {
+        width: 100%;
+        padding: 14px 18px;
+        background: var(--verde-oscuro);
+        color: var(--crema);
+        font-weight: 800;
+        font-size: 15px;
+        text-align: center;
+    }
+    .flip-back {
+        background: var(--verde-oscuro);
+        color: var(--crema);
+        transform: rotateY(180deg);
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .flip-back h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: var(--amarillo-maiz);
+    }
+    .flip-back p {
+        font-size: 13px;
+        line-height: 1.7;
+        color: rgba(245,237,214,0.9);
+        flex: 1;
+        overflow-y: auto;
+    }
+    .flip-back .dato-tag {
+        background: rgba(232,184,75,0.18);
+        border: 1px solid var(--amarillo-maiz);
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: var(--amarillo-maiz);
+        margin-top: 12px;
+    }
+    .flip-hint {
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-mid);
+        margin-top: 12px;
+        opacity: 0.7;
+        font-style: italic;
+    }
+
+    .carousel-wrap { position: relative; overflow: hidden; border-radius: 16px; margin-top: 16px; }
+    .carousel-track {
+        display: flex;
+        transition: transform .5s ease;
+    }
+    .carousel-slide {
+        min-width: 100%;
+        background: var(--verde-oscuro);
+        color: var(--crema);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    .carousel-img {
+        width: 100%; height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 90px;
+        position: relative;
+    }
+    .carousel-img-bg1 { background: linear-gradient(135deg, #3a6b18, #8AB661); }
+    .carousel-img-bg2 { background: linear-gradient(135deg, #5a3010, #c49a6c); }
+    .carousel-img-bg3 { background: linear-gradient(135deg, #1a4a3a, #4A7C2F); }
+    .carousel-caption {
+        padding: 20px 24px;
+    }
+    .carousel-caption h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        color: var(--amarillo-maiz);
+        margin-bottom: 8px;
+    }
+    .carousel-caption p { font-size: 14px; line-height: 1.6; opacity: .9; }
+    .carousel-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 14px;
+    }
+    .carousel-btn {
+        background: var(--verde-oscuro);
+        color: var(--crema);
+        border: 2px solid var(--verde-claro);
+        border-radius: 50%;
+        width: 38px; height: 38px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background .2s;
+    }
+    .carousel-btn:hover { background: var(--verde-medio); }
+    .carousel-dots { display: flex; gap: 6px; }
+    .carousel-dot {
+        width: 10px; height: 10px;
+        border-radius: 50%;
+        background: var(--crema-oscuro);
+        cursor: pointer;
+        border: none;
+        transition: background .2s;
+    }
+    .carousel-dot.active { background: var(--verde-oscuro); }
+
+    .cocina-scene {
+        background: linear-gradient(180deg, #e8d5a3 0%, #f5edd6 100%);
+        border-radius: 18px;
+        padding: 36px;
+        margin-top: 18px;
+        position: relative;
+        min-height: 320px;
+        box-shadow: inset 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .cocina-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        color: var(--tierra);
+        margin-bottom: 28px;
+        text-align: center;
+    }
+    .cocina-objects {
+        display: flex;
+        gap: 36px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .cocina-obj {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .cocina-obj:hover { transform: scale(1.1); }
+    .cocina-obj.visited .obj-icon { border-color: var(--verde-oscuro); box-shadow: 0 0 0 3px rgba(45,80,22,0.2); }
+    .obj-icon {
+        width: 110px; height: 110px;
+        border-radius: 50%;
+        background: var(--tierra-claro);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 56px;
+        border: 4px solid transparent;
+        transition: all 0.3s;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    .obj-label {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--tierra);
+        text-align: center;
+        max-width: 120px;
+        line-height: 1.4;
+    }
+    .cocina-progress {
+        text-align: center;
+        margin-top: 28px;
+        font-size: 14px;
+        color: var(--text-mid);
+    }
+    .progress-bar-wrap {
+        background: var(--crema-oscuro);
+        border-radius: 20px;
+        height: 10px;
+        margin: 10px auto;
+        max-width: 320px;
+        overflow: hidden;
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--verde-claro), var(--verde-oscuro));
+        border-radius: 20px;
+        transition: width 0.5s ease;
+    }
+    #btn-fogon {
+        display: block;
+        margin: 24px auto 0;
+        padding: 14px 36px;
+        background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));
+        color: var(--crema);
+        border: none;
+        border-radius: 28px;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        opacity: 0;
+        pointer-events: none;
+        box-shadow: 0 4px 16px rgba(45,80,22,0.3);
+    }
+    #btn-fogon.enabled { opacity: 1; pointer-events: auto; }
+    #btn-fogon:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(45,80,22,0.4); }
+
+    .mesa-container {
+        background: #fff;
+        border-radius: 18px;
+        padding: 32px;
+        box-shadow: var(--shadow);
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .mesa-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 18px;
+        margin-top: 22px;
+    }
+    .mesa-item {
+        background: linear-gradient(135deg, #fff, #faf6f0);
+        border: 2px solid var(--crema-oscuro);
+        border-radius: 16px;
+        padding: 22px 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.25s;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .mesa-item:hover { border-color: var(--verde-claro); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    .mesa-item.correct { border-color: var(--verde-oscuro); background: linear-gradient(135deg, #eafbea, #f0fff0); }
+    .mesa-item.wrong { border-color: var(--rojo-frijol); background: linear-gradient(135deg, #faeaea, #fff0f0); }
+    .mesa-item .item-icon { font-size: 44px; margin-bottom: 12px; }
+    .mesa-item h5 { font-size: 14.5px; font-weight: 800; color: var(--text-dark); line-height: 1.4; }
+    .mesa-feedback {
+        margin-top: 20px;
+        padding: 18px 22px;
+        border-radius: 14px;
+        font-size: 14.5px;
+        line-height: 1.7;
+        display: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .mesa-feedback.show { display: block; animation: slideIn 0.3s ease; }
+    .mesa-feedback.correct-fb { background: linear-gradient(135deg, #eafbea, #f0fff0); border: 2px solid var(--verde-claro); color: var(--verde-oscuro); }
+    .mesa-feedback.wrong-fb { background: linear-gradient(135deg, #faeaea, #fff0f0); border: 2px solid var(--rojo-frijol); color: var(--rojo-frijol); }
+    .fogon-visual {
+        text-align: center;
+        font-size: 80px;
+        margin-top: 20px;
+        transition: all 0.4s;
+        min-height: 90px;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    }
+
+    .recetario-container {
+        background: #fff;
+        border-radius: 18px;
+        padding: 36px;
+        box-shadow: var(--shadow);
+        max-width: 850px;
+        margin: 0 auto 32px;
+    }
+    .recetario-form {
+        background: linear-gradient(135deg, #faf6f0, #fff);
+        border: 2px solid var(--crema-oscuro);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 36px;
+    }
+    .recetario-form h3 {
+        font-family: 'Playfair Display', serif;
+        color: var(--tierra);
+        margin-bottom: 24px;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+        display: block;
+        font-weight: 800;
+        font-size: 13px;
+        color: var(--text-mid);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid var(--crema-oscuro);
+        border-radius: 12px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 15px;
+        background: var(--crema);
+        color: var(--text-dark);
+        transition: all 0.2s;
+        resize: vertical;
+        box-sizing: border-box;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: var(--text-mid);
+        opacity: 0.7;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--verde-oscuro);
+        box-shadow: 0 0 0 3px rgba(45,80,22,0.1);
+    }
+    .btn-publicar {
+        background: linear-gradient(135deg, var(--tierra), var(--naranja));
+        color: #fff;
+        border: none;
+        padding: 14px 38px;
+        border-radius: 28px;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 14px rgba(139,94,60,0.3);
+    }
+    .btn-publicar:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(139,94,60,0.4); }
+    
+    .recetas-header {
+        text-align: center;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 2px dashed var(--crema-oscuro);
+    }
+    
+    .recetas-wall {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 22px;
+        padding: 18px 0;
+    }
+    .receta-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 2px solid var(--crema-oscuro);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .receta-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+    .receta-header {
+        background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));
+        color: var(--crema);
+        padding: 18px 20px;
+    }
+    .receta-header h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+    }
+    .receta-header .semilla-tag {
+        display: inline-block;
+        background: rgba(232,184,75,0.2);
+        color: var(--amarillo-maiz);
+        font-size: 11.5px;
+        padding: 3px 12px;
+        border-radius: 20px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+    .receta-body { padding: 18px 20px; }
+    .receta-body p { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
+    .receta-comments { padding: 14px 20px; border-top: 2px solid var(--crema-oscuro); background: linear-gradient(135deg, #faf6f0, #fff); }
+    .comment-input {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .comment-input input {
+        flex: 1;
+        padding: 9px 14px;
+        border: 2px solid var(--crema-oscuro);
+        border-radius: 22px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        background: var(--crema);
+        transition: all 0.2s;
+    }
+    .comment-input input:focus { outline: none; border-color: var(--verde-oscuro); }
+    .comment-input button {
+        background: var(--verde-oscuro);
+        color: #fff;
+        border: none;
+        border-radius: 22px;
+        padding: 9px 18px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .comment-input button:hover { background: var(--verde-medio); transform: scale(1.05); }
+    .comment-list {
+        margin-top: 8px;
+        max-height: 120px;
+        overflow-y: auto;
+    }
+    .comment-item {
+        font-size: 13px;
+        color: var(--text-mid);
+        padding: 6px 0;
+        border-bottom: 1px solid var(--crema);
+    }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-item strong { color: var(--tierra); }
+    .empty-wall {
+        text-align: center;
+        padding: 50px;
+        color: var(--text-mid);
+        font-size: 15px;
+        opacity: 0.6;
+        grid-column: 1/-1;
+        background: linear-gradient(135deg, #faf6f0, #fff);
+        border-radius: 16px;
+        border: 2px dashed var(--crema-oscuro);
+    }
+    .duplicate-msg {
+        color: var(--rojo-frijol);
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+        font-weight: 700;
+    }
+
+    .eval-container {
+        background: #fff;
+        border-radius: 18px;
+        padding: 32px;
+        box-shadow: var(--shadow);
+        max-width: 850px;
+        margin: 0 auto;
+    }
+    .eval-progress {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 26px;
+        flex-wrap: wrap;
+        gap: 14px;
+        background: linear-gradient(135deg, #faf6f0, #fff);
+        padding: 16px 20px;
+        border-radius: 14px;
+    }
+    .eval-counter {
+        font-size: 14px;
+        color: var(--text-mid);
+        font-weight: 700;
+    }
+    .score-bar-wrap {
+        background: var(--crema-oscuro);
+        border-radius: 20px;
+        height: 10px;
+        flex: 1;
+        overflow: hidden;
+        min-width: 120px;
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .score-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--verde-claro), var(--verde-oscuro));
+        border-radius: 20px;
+        transition: width 0.4s ease;
+    }
+    .caso-card {
+        background: linear-gradient(135deg, #fff, #faf6f0);
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        border: 2px solid var(--crema-oscuro);
+        display: none;
+    }
+    .caso-card.active { display: block; animation: slideIn 0.3s ease; }
+    .caso-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--tierra-claro), var(--tierra));
+        color: #fff;
+        font-size: 11.5px;
+        font-weight: 800;
+        padding: 4px 14px;
+        border-radius: 20px;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        box-shadow: 0 2px 8px rgba(139,94,60,0.3);
+    }
+    .caso-situacion {
+        background: var(--crema);
+        border-left: 5px solid var(--verde-oscuro);
+        padding: 16px 20px;
+        border-radius: 0 12px 12px 0;
+        margin-bottom: 22px;
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--text-mid);
+    }
+    .caso-pregunta {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        margin-bottom: 18px;
+        color: var(--text-dark);
+        font-weight: 700;
+    }
+    .opciones-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .opcion-btn {
+        width: 100%;
+        text-align: left;
+        padding: 16px 20px;
+        border: 2px solid var(--crema-oscuro);
+        border-radius: 14px;
+        background: #fff;
+        font-family: 'Nunito', sans-serif;
+        font-size: 14.5px;
+        color: var(--text-dark);
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        font-weight: 600;
+    }
+    .opcion-btn:hover { border-color: var(--verde-claro); background: #f8fef4; transform: translateX(4px); }
+    .opcion-btn.correct { border-color: var(--verde-oscuro); background: linear-gradient(135deg, #eafbea, #f0fff0); color: var(--verde-oscuro); }
+    .opcion-btn.wrong { border-color: var(--rojo-frijol); background: linear-gradient(135deg, #faeaea, #fff0f0); color: var(--rojo-frijol); }
+    .opcion-btn:disabled { cursor: default; opacity: 0.7; }
+    .opcion-letra {
+        font-weight: 800;
+        min-width: 26px;
+        color: var(--tierra-claro);
+        font-size: 15px;
+    }
+    .eval-feedback {
+        margin-top: 18px;
+        padding: 16px 20px;
+        border-radius: 14px;
+        font-size: 14.5px;
+        line-height: 1.7;
+        display: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .eval-feedback.show { display: block; animation: slideIn 0.3s ease; }
+    .eval-feedback.correct-fb { background: linear-gradient(135deg, #eafbea, #f0fff0); border: 2px solid var(--verde-claro); color: var(--verde-oscuro); }
+    .eval-feedback.wrong-fb { background: linear-gradient(135deg, #faeaea, #fff0f0); border: 2px solid var(--rojo-frijol); color: var(--rojo-frijol); }
+    .btn-siguiente {
+        margin-top: 18px;
+        padding: 14px 32px;
+        background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));
+        color: #fff;
+        border: none;
+        border-radius: 26px;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        font-size: 15px;
+        cursor: pointer;
+        display: none;
+        transition: all 0.2s;
+        box-shadow: 0 4px 14px rgba(45,80,22,0.3);
+    }
+    .btn-siguiente.show { display: inline-block; }
+    .btn-siguiente:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(45,80,22,0.4); }
+    .eval-resultado {
+        display: none;
+        text-align: center;
+        padding: 50px 24px;
+        background: linear-gradient(135deg, #faf6f0, #fff);
+        border-radius: 18px;
+        border: 2px solid var(--crema-oscuro);
+    }
+    .eval-resultado.show { display: block; animation: fadeIn 0.5s ease; }
+    .resultado-score {
+        font-family: 'Playfair Display', serif;
+        font-size: 4.5rem;
+        color: var(--verde-oscuro);
+        font-weight: 900;
+        text-shadow: 0 2px 8px rgba(45,80,22,0.2);
+    }
+    .resultado-emoji {
+        font-size: 80px;
+        margin: 16px 0;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    }
+    .resultado-msg {
+        font-size: 1.15rem;
+        color: var(--text-mid);
+        margin-top: 14px;
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.7;
+    }
+    .btn-reiniciar {
+        margin-top: 28px;
+        padding: 14px 38px;
+        background: linear-gradient(135deg, var(--tierra), var(--naranja));
+        color: #fff;
+        border: none;
+        border-radius: 28px;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 14px rgba(139,94,60,0.3);
+    }
+    .btn-reiniciar:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(139,94,60,0.4); }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; animation: fadeIn 0.3s ease; }
+    .modal-box {
+        background: linear-gradient(135deg, var(--crema), #fff);
+        border-radius: 22px;
+        max-width: 560px;
+        width: 100%;
+        padding: 36px;
+        position: relative;
+        animation: slideUp 0.35s ease;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        border: 2px solid var(--crema-oscuro);
+    }
+    @keyframes slideUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-icon { font-size: 64px; text-align: center; margin-bottom: 18px; }
+    .modal-box h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        color: var(--tierra);
+        margin-bottom: 14px;
+        text-align: center;
+    }
+    .modal-box p {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--text-mid);
+        text-align: justify;
+    }
+    .modal-close {
+        position: absolute;
+        top: 18px; right: 22px;
+        background: var(--verde-oscuro);
+        border: none;
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--crema);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        font-weight: bold;
+    }
+    .modal-close:hover { background: var(--rojo-frijol); transform: rotate(90deg); }
+
+    .divider {
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--crema-oscuro), transparent);
+        margin: 42px 0;
+        border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+        .hero-band h1 { font-size: 1.7rem; }
+        .hero-band p { font-size: 0.95rem; }
+        .phase-panel { padding: 22px 18px; }
+        .cocina-objects { gap: 20px; }
+        .obj-icon { width: 90px; height: 90px; font-size: 44px; }
+        .flip-grid { grid-template-columns: 1fr; }
+        .mesa-grid { grid-template-columns: repeat(2, 1fr); }
+        .nav-btn { min-width: 100px; padding: 12px 8px; font-size: 12px; }
+        .nav-btn .nav-icon { font-size: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+    <body class="page-estacioncuatro">
+
+    <!-- HEADER RAÍCES REBELDES -->
+    <header class="raícesrebeldes-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <a href="index.html" class="brand-title">
+                        <span>R</span><span>a</span><span>i</span><span>c</span><span>e</span><span>s</span>
+                    </a>
+                </div>
+                <button class="mobile-toggle" aria-label="Abrir menú">☰</button>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="estacionuno.html">Estación 1</a></li>
+                    <li><a href="estaciondos.html">Estación 2</a></li>
+                    <li><a href="estaciontres.html">Estación 3</a></li>
+                    <li><a href="estacioncuatro.html" class="active">Estación 4</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div class="hero-content">
+                <span class="hero-subtitle">TERRITORIO, SEMILLA Y CUIDADO</span>
+                <h1 class="hero-title">CUARTA ESTACIÓN</h1>
+                <p class="hero-tagline"> SOBERANÍA ALIMENTARIA </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- BARRA DE NAVEGACIÓN DE SECCIONES -->
+    <nav class="main-nav" role="navigation" aria-label="Navegación de secciones">
+        <button class="nav-btn active" onclick="showSection('teorica')">
+            <span class="nav-icon">🌱</span>Teoría
+        </button>
+        <button class="nav-btn" onclick="showSection('mesa')">
+            <span class="nav-icon">🌽</span>Mesa Comunitaria
+        </button>
+        <button class="nav-btn" onclick="showSection('recetario')">
+            <span class="nav-icon">📖</span>Recetario
+        </button>
+        <button class="nav-btn" onclick="showSection('evaluacion')">
+            <span class="nav-icon">🏆</span>Evaluación
+        </button>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <div class="content-wrapper">
+
+            <!-- SECCIÓN TEÓRICA -->
+            <div id="sec-teorica" class="section active">
+                <div class="hero-band band-verde">
+                    <h1>🌿 El Territorio como Despensa</h1>
+                    <p>Un recorrido por las semillas, la minga y la cocina que sostienen la soberanía alimentaria del Eje Cafetero.</p>
+                </div>
+
+                <div class="phase-tabs">
+                    <button class="phase-tab active" onclick="showPhase(this,'p1')">🌾 Fase 1: El Origen</button>
+                    <button class="phase-tab" onclick="showPhase(this,'p2')">🤝 Fase 2: El Tejido</button>
+                    <button class="phase-tab" onclick="showPhase(this,'p3')">🔥 Fase 3: El Eco</button>
+                </div>
+
+                <!-- FASE 1 -->
+                <div id="phase-p1" class="phase-panel active">
+                    <span class="section-label">⬡ Parada 1</span>
+                    <h2 class="parada-title">Las Semillas que Nos Sostienen</h2>
+                    <p class="parada-desc">El derecho de los pueblos a decidir qué sembrar. Haz clic en cada semilla para descubrir su historia y su poder.</p>
+                    <p class="flip-hint">🖱️ Pasa el cursor o toca la carta para voltearla</p>
+
+                    <div class="flip-grid">
+                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                            <div class="flip-card-inner">
+                                <div class="flip-face flip-front">
+                                    <div class="seed-img" style="background:linear-gradient(160deg,#d4af37,#8B5E3C)">🌽</div>
+                                    <div class="seed-label">Semilla 1 — Maíz Capio</div>
+                                </div>
+                                <div class="flip-face flip-back">
+                                    <div>
+                                        <h4>🌽 El Grano de la Identidad</h4>
+                                        <p><strong>Soberanía y Diversidad:</strong> Variedad criolla esencial en la zona cafetera para arepas de mote y almojábanas.</p>
+                                    </div>
+                                    <div class="dato-tag">
+                                        💡 <strong>Dato Real:</strong> A diferencia del maíz transgénico, el Capio permite la "resiembra": el agricultor guarda los mejores granos sin depender de multinacionales.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                            <div class="flip-card-inner">
+                                <div class="flip-face flip-front">
+                                    <div class="seed-img" style="background:linear-gradient(160deg,#8B2E2E,#c49a6c)">🫘</div>
+                                    <div class="seed-label">Semilla 2 — Fríjol Cargamanto</div>
+                                </div>
+                                <div class="flip-face flip-back">
+                                    <div>
+                                        <h4>🫘 La Base del Cuidado</h4>
+                                        <p><strong>Territorio y Nutrición:</strong> Protagonista de la bandeja, sustento proteico familiar en Quindío y Risaralda.</p>
+                                    </div>
+                                    <div class="dato-tag">
+                                        💡 <strong>Dato Real:</strong> Crece trepando por el tallo del maíz (asociación), fijando nitrógeno sin fertilizantes. La soberanía no es monocultivo: es un sistema vivo.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                            <div class="flip-card-inner">
+                                <div class="flip-face flip-front">
+                                    <div class="seed-img" style="background:linear-gradient(160deg,#7a5c35,#e8d5a3)">🥔</div>
+                                    <div class="seed-label">Semilla 3 — Papa Guata</div>
+                                </div>
+                                <div class="flip-face flip-back">
+                                    <div>
+                                        <h4>🥔 La Resistencia de Altura</h4>
+                                        <p><strong>Saberes Ancestrales:</strong> En zonas altas del Eje Cafetero, resiste heladas y plagas mejor que las variedades "mejoradas".</p>
+                                    </div>
+                                    <div class="dato-tag">
+                                        💡 <strong>Dato Real:</strong> Su diversidad genética es un seguro climático: si el clima cambia, siempre habrá alguna planta que sobreviva.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FASE 2 -->
+                <div id="phase-p2" class="phase-panel">
+                    <span class="section-label">⬡ Parada 2</span>
+                    <h2 class="parada-title">La Minga de la Cosecha</h2>
+                    <p class="parada-desc">El tejido comunitario y el trueque como economía del cuidado en la finca cafetera. Navega por las imágenes de la colaboración.</p>
+
+                    <div class="carousel-wrap">
+                        <div class="carousel-track" id="carouselTrack">
+                            <div class="carousel-slide">
+                                <div class="carousel-img carousel-img-bg1">👩‍🌾</div>
+                                <div class="carousel-caption">
+                                    <h4>"La fuerza del convite"</h4>
+                                    <p>Un grupo de vecinos deshierba una huerta circular juntos. Aquí el alimento no es una mercancía: es el motor que une a la vereda.</p>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="carousel-img carousel-img-bg2">🍌</div>
+                                <div class="carousel-caption">
+                                    <h4>"El Trueque: Economía del Cuidado"</h4>
+                                    <p>Una mesa donde alguien pone plátano y otra persona entrega café. El alimento circula para que a nadie le falte nada.</p>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="carousel-img carousel-img-bg3">🍲</div>
+                                <div class="carousel-caption">
+                                    <h4>"Comer es un acto político"</h4>
+                                    <p>Todos alrededor de una olla de sancocho. Compartir el plato es donde la comunidad se reconoce y se protege.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn" onclick="moveCarousel(-1)">&#8592;</button>
+                        <div class="carousel-dots" id="carouselDots">
+                            <button class="carousel-dot active" onclick="goCarousel(0)"></button>
+                            <button class="carousel-dot" onclick="goCarousel(1)"></button>
+                            <button class="carousel-dot" onclick="goCarousel(2)"></button>
+                        </div>
+                        <button class="carousel-btn" onclick="moveCarousel(1)">&#8594;</button>
+                    </div>
+                </div><!-- /fase2 -->
+
+                <!-- FASE 3 -->
+                <div id="phase-p3" class="phase-panel">
+                    <span class="section-label">⬡ Parada 3</span>
+                    <h2 class="parada-title">La Cocina como Templo</h2>
+                    <p class="parada-desc">Haz clic en cada elemento de la cocina de leña para descubrir la teoría que guarda. Debes explorar ambos para continuar.</p>
+
+                    <div class="cocina-scene">
+                        <div class="cocina-title">🏡 Interior de la cocina de leña</div>
+                        <div class="cocina-objects">
+                            <div class="cocina-obj" id="obj-fogon" onclick="clickCocinaObj('fogon')">
+                                <div class="obj-icon" style="background:linear-gradient(160deg,#c49a6c,#8B5E3C)">🔥</div>
+                                <div class="obj-label">Estufa de Leña<br><small style="font-weight:400;font-size:11px">(Fogón de tres piedras)</small></div>
+                            </div>
+                            <div class="cocina-obj" id="obj-canasto" onclick="clickCocinaObj('canasto')">
+                                <div class="obj-icon" style="background:linear-gradient(160deg,#4A7C2F,#8AB661)">🧺</div>
+                                <div class="obj-label">Canasto de Bejuco<br><small style="font-weight:400;font-size:11px">(Colgado en la pared)</small></div>
+                            </div>
+                        </div>
+                        <div class="cocina-progress">
+                            <div id="cocina-progress-text">Explora los elementos: <span id="cocina-count">0</span>/2</div>
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar-fill" id="cocina-prog-bar" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <button id="btn-fogon" onclick="showSection('mesa')">🔥 Ir al Fogón de la Memoria →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MESA COMUNITARIA -->
+            <div id="sec-mesa" class="section">
+                <div class="hero-band band-tierra">
+                    <h1>🌽 La Mesa Comunitaria</h1>
+                    <p>Selecciona qué elementos representan la <strong>Soberanía Alimentaria</strong>. ¿Qué pones en la mesa del territorio?</p>
+                </div>
+                <div class="mesa-container">
+                    <span class="section-label">🧭 Elige con sabiduría</span>
+                    <h2 class="parada-title">¿Qué nutre el territorio?</h2>
+                    <p class="parada-desc">Haz clic en cada elemento de la mesa. Algunos encienden el fogón de la soberanía; otros lo apagan. Aprende de cada elección.</p>
+
+                    <div class="mesa-grid" id="mesaGrid">
+                        <div class="mesa-item" onclick="evaluarMesa(this, true, '¡Exacto! Las semillas nativas son la base de la soberanía. Al guardarlas, el pueblo controla su propio futuro alimentario.')">
+                            <div class="item-icon">🌽</div>
+                            <h5>Semillas nativas</h5>
+                        </div>
+                        <div class="mesa-item" onclick="evaluarMesa(this, false, 'El monocultivo industrial prioriza la exportación sobre la alimentación local y degrada la biodiversidad del suelo. Rompe el ciclo territorial.')">
+                            <div class="item-icon">🏭</div>
+                            <h5>Monocultivo industrial</h5>
+                        </div>
+                        <div class="mesa-item" onclick="evaluarMesa(this, true, '¡Muy bien! El trueque fortalece el tejido social y mantiene el alimento circulando dentro de la comunidad, sin depender del mercado global.')">
+                            <div class="item-icon">🔄</div>
+                            <h5>Trueque comunitario</h5>
+                        </div>
+                        <div class="mesa-item" onclick="evaluarMesa(this, false, 'Los pesticidas industriales deterioran el suelo, contaminan el agua y crean dependencia de empresas externas. La soberanía busca técnicas que regeneren el territorio.')">
+                            <div class="item-icon">☠️</div>
+                            <h5>Pesticidas industriales</h5>
+                        </div>
+                        <div class="mesa-item" onclick="evaluarMesa(this, true, '¡Correcto! La huerta diversa es la farmacia y el mercado local del territorio. Su biodiversidad garantiza resiliencia ante el cambio climático.')">
+                            <div class="item-icon">🥦</div>
+                            <h5>Huerta diversa</h5>
+                        </div>
+                        <div class="mesa-item" onclick="evaluarMesa(this, false, 'Las semillas patentadas obligan al agricultor a comprar cada temporada a multinacionales, eliminando la autonomía y la resiembra ancestral.')">
+                            <div class="item-icon">🔒</div>
+                            <h5>Semillas patentadas</h5>
+                        </div>
+                    </div>
+
+                    <div id="mesaFeedback" class="mesa-feedback"></div>
+                    <div class="fogon-visual" id="fogonVisual">🍳</div>
+                </div>
+            </div>
+
+            <!-- RECETARIO -->
+            <div id="sec-recetario" class="section">
+                <div class="hero-band band-naranja">
+                    <h1>📖 Recetario de Saberes</h1>
+                    <p>Construye el libro vivo del territorio. Comparte tu receta con contexto, relato y raíz comunitaria.</p>
+                </div>
+                <div class="recetario-container">
+                    <div class="recetario-form">
+                        <h3>✍️ Publica tu receta</h3>
+                        <div class="form-group">
+                            <label>🍽️ Nombre del plato</label>
+                            <input type="text" id="inp-plato" placeholder="Ej: Sudado de Guineo con Frijolito">
+                        </div>
+                        <div class="form-group">
+                            <label>🌱 Ingrediente de la Tierra (semilla o planta local)</label>
+                            <input type="text" id="inp-semilla" placeholder="Ej: Guineo hartón de la huerta">
+                        </div>
+                        <div class="form-group">
+                            <label>💬 Relato del Cuidado (¿quién te enseñó o cómo cuida a tu comunidad?)</label>
+                            <textarea id="inp-relato" rows="4" placeholder="Mi abuela lo preparaba cada domingo en leña…"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>👤 Tu nombre o alias</label>
+                            <input type="text" id="inp-autor" placeholder="Ej: Valentina, la de la vereda El Congal">
+                        </div>
+                        <button class="btn-publicar" onclick="publicarReceta()">🌿 Publicar en el Muro</button>
+                        <div class="duplicate-msg" id="duplicateMsg">⚠️ Ya existe una receta con ese nombre. ¡Sé original!</div>
+                    </div>
+
+                    <div class="recetas-header">
+                        <h3 style="font-family:'Playfair Display',serif;color:var(--verde-oscuro);margin-bottom:8px;text-align:center;font-size:1.5rem">🌿 Muro Comunitario de Recetas</h3>
+                        <p style="text-align:center;color:var(--text-mid);font-size:14px;margin-bottom:20px">Las recetas compartidas por la comunidad permanecen guardadas en este muro</p>
+                    </div>
+                    <div class="recetas-wall" id="recetasWall">
+                        <div class="empty-wall" id="emptyWall">Aún no hay recetas. ¡Sé el primero en compartir un saber!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVALUACIÓN -->
+            <div id="sec-evaluacion" class="section">
+                <div class="hero-band band-rojo">
+                    <h1>🏆 Evaluación: Casos del Territorio</h1>
+                    <p>Situaciones reales del Eje Cafetero. Demuestra que sabes aplicar los conceptos.</p>
+                </div>
+                <div class="eval-container">
+                    <div class="eval-progress">
+                        <span class="eval-counter" id="evalCounter">Caso 1 de 4</span>
+                        <div class="score-bar-wrap">
+                            <div class="score-bar-fill" id="scoreBar" style="width:0%"></div>
+                        </div>
+                        <span class="eval-counter" id="scoreLabel">0 pts</span>
+                    </div>
+
+                    <div class="caso-card active" id="caso-0">
+                        <span class="caso-badge">🌾 Caso #1 — El Banco de Semillas</span>
+                        <div class="caso-situacion">
+                            En una vereda del Quindío, una asociación campesina decide crear un "Banco de Semillas" propio para no depender de la compra de semillas comerciales cada temporada.
+                        </div>
+                        <div class="caso-pregunta">¿Qué concepto ancestral están aplicando principalmente?</div>
+                        <div class="opciones-grid">
+                            <button class="opcion-btn" onclick="responder(0,this,true,'¡Excelente análisis! Al guardar y proteger sus propias semillas, la comunidad recupera el poder sobre su futuro y su alimento, sin permisos externos.')">
+                                <span class="opcion-letra">A</span> Soberanía Alimentaria
+                            </button>
+                            <button class="opcion-btn" onclick="responder(0,this,false,'Cerca, pero no. La seguridad industrial solo se preocupa por \"tener comida\", sin importar si la semilla es comprada o modificada. Aquí el foco es la autonomía.')">
+                                <span class="opcion-letra">B</span> Seguridad Alimentaria Industrial
+                            </button>
+                            <button class="opcion-btn" onclick="responder(0,this,false,'¡Piénsalo de nuevo! El monocultivo suele usar semillas de laboratorio que no se pueden guardar. El banco de semillas busca todo lo contrario: diversidad.')">
+                                <span class="opcion-letra">C</span> Monocultivo Tecnificado
+                            </button>
+                        </div>
+                        <div class="eval-feedback" id="fb-0"></div>
+                        <button class="btn-siguiente" id="next-0" onclick="siguienteCaso(1)">Siguiente caso →</button>
+                    </div>
+
+                    <div class="caso-card" id="caso-1">
+                        <span class="caso-badge">🤝 Caso #2 — La Minga de Deshierbe</span>
+                        <div class="caso-situacion">
+                            Doña Cecilia, agricultora de Salento, convoca a sus vecinos para deshierbar su huerta. Ella no paga con dinero: la próxima semana todos trabajarán juntos en la huerta de otro vecino. Al terminar, comen sancocho en colectivo.
+                        </div>
+                        <div class="caso-pregunta">¿Qué práctica económica está ejerciendo Doña Cecilia?</div>
+                        <div class="opciones-grid">
+                            <button class="opcion-btn" onclick="responder(1,this,false,'El comercio justo implica precios equitativos en mercados monetarios. Aquí no hay dinero de por medio; es una lógica diferente.')">
+                                <span class="opcion-letra">A</span> Comercio Justo
+                            </button>
+                            <button class="opcion-btn" onclick="responder(1,this,true,'¡Correcto! El convite es la forma más pura de economía del cuidado: trabajo colectivo, sin mediación de dinero, que fortalece el tejido social de la vereda.')">
+                                <span class="opcion-letra">B</span> Convite / Economía del Cuidado
+                            </button>
+                            <button class="opcion-btn" onclick="responder(1,this,false,'El cooperativismo moderno implica una estructura legal formal. Lo que describe Doña Cecilia es una práctica ancestral más directa: el convite.')">
+                                <span class="opcion-letra">C</span> Cooperativismo moderno
+                            </button>
+                        </div>
+                        <div class="eval-feedback" id="fb-1"></div>
+                        <button class="btn-siguiente" id="next-1" onclick="siguienteCaso(2)">Siguiente caso →</button>
+                    </div>
+
+                    <div class="caso-card" id="caso-2">
+                        <span class="caso-badge">🥔 Caso #3 — La Papa que Sobrevivió</span>
+                        <div class="caso-situacion">
+                            Un invierno inusualmente largo arruinó el 80% de los cultivos de papa comercial en una vereda de Risaralda. Sin embargo, los agricultores que mantenían variedades nativas como la Papa Colorada o la Guata apenas sufrieron pérdidas.
+                        </div>
+                        <div class="caso-pregunta">¿Cuál es el principio de soberanía que protegió a estos agricultores?</div>
+                        <div class="opciones-grid">
+                            <button class="opcion-btn" onclick="responder(2,this,false,'El subsidio es una política gubernamental. Aquí el factor protector fue interno a la comunidad, no externo.')">
+                                <span class="opcion-letra">A</span> Subsidio estatal al agro
+                            </button>
+                            <button class="opcion-btn" onclick="responder(2,this,false,'La tecnificación suele favorecer las variedades comerciales uniformes, que son precisamente las que fallaron. La solución vino de lo opuesto.')">
+                                <span class="opcion-letra">B</span> Tecnificación del cultivo
+                            </button>
+                            <button class="opcion-btn" onclick="responder(2,this,true,'¡Muy bien! La diversidad genética de las variedades nativas es el seguro más antiguo del mundo. Cuando una falla, otra resiste. Esto es resiliencia desde la soberanía alimentaria.')">
+                                <span class="opcion-letra">C</span> Biodiversidad como resiliencia climática
+                            </button>
+                        </div>
+                        <div class="eval-feedback" id="fb-2"></div>
+                        <button class="btn-siguiente" id="next-2" onclick="siguienteCaso(3)">Siguiente caso →</button>
+                    </div>
+
+                    <div class="caso-card" id="caso-3">
+                        <span class="caso-badge">🔥 Caso #4 — La Cocina que Enseña</span>
+                        <div class="caso-situacion">
+                            La abuela Rosalba le enseña a su nieto Tomás cuándo sembrar la yuca según la fase de la luna, cómo preparar un caldo de ahuyama para las gripes y qué hierbas del jardín sirven para curar el mal de estómago. Todo mientras aviva el fogón.
+                        </div>
+                        <div class="caso-pregunta">¿Qué forma de transmisión del saber está usando la abuela Rosalba?</div>
+                        <div class="opciones-grid">
+                            <button class="opcion-btn" onclick="responder(3,this,false,'La escolarización formal implica aulas, libros y currículos. Lo que hace la abuela es un proceso mucho más íntimo y situado en el territorio.')">
+                                <span class="opcion-letra">A</span> Escolarización formal
+                            </button>
+                            <button class="opcion-btn" onclick="responder(3,this,false,'La agricultura de precisión usa tecnología digital y sensores. La abuela usa algo más antiguo y más efectivo: el cuerpo, el fuego y la palabra.')">
+                                <span class="opcion-letra">B</span> Agricultura de precisión digital
+                            </button>
+                            <button class="opcion-btn" onclick="responder(3,this,true,'¡Perfecto! La oralidad en la cocina es la escuela más antigua: transmite tecnología agrícola, medicina ancestral y memoria cultural al mismo tiempo, alrededor del fuego.')">
+                                <span class="opcion-letra">C</span> Oralidad y pedagogía de la cocina
+                            </button>
+                        </div>
+                        <div class="eval-feedback" id="fb-3"></div>
+                        <button class="btn-siguiente" id="next-3" onclick="mostrarResultado()">Ver mi resultado 🌿</button>
+                    </div>
+
+                    <div class="eval-resultado" id="evalResultado">
+                        <div class="resultado-score" id="resultadoScore">0/4</div>
+                        <div class="resultado-emoji" id="resultadoEmoji">🌱</div>
+                        <div class="resultado-msg" id="resultadoMsg"></div>
+                        <button class="btn-reiniciar" onclick="reiniciarEval()">🔄 Intentar de nuevo</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModalBtn()">✕</button>
+            <div class="modal-icon" id="modalIcon"></div>
+            <h3 id="modalTitle"></h3>
+            <p id="modalBody"></p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Raíces Rebeldes - Estación 4</p>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <script>
+    // ─── NAVIGATION ─────────────────────────────────────────
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('sec-' + id).classList.add('active');
+        const idx = ['teorica','mesa','recetario','evaluacion'].indexOf(id);
+        document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+        window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    // ─── PHASE TABS ─────────────────────────────────────────
+    function showPhase(btn, phaseId) {
+        document.querySelectorAll('.phase-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.phase-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('phase-' + phaseId).classList.add('active');
+    }
+
+    // ─── CAROUSEL ───────────────────────────────────────────
+    let carouselIdx = 0;
+    const totalSlides = 3;
+    function moveCarousel(dir) {
+        carouselIdx = (carouselIdx + dir + totalSlides) % totalSlides;
+        updateCarousel();
+    }
+    function goCarousel(i) { carouselIdx = i; updateCarousel(); }
+    function updateCarousel() {
+        document.getElementById('carouselTrack').style.transform = 'translateX(-' + (carouselIdx * 100) + '%)';
+        document.querySelectorAll('.carousel-dot').forEach((d,i) => {
+            d.classList.toggle('active', i === carouselIdx);
+        });
+    }
+
+    // ─── COCINA OBJETOS ──────────────────────────────────────
+    const cocinaData = {
+        fogon: {
+            icon: '🔥',
+            title: 'Teoría del Fuego y la Palabra',
+            body: 'El fuego es el primer pedagogo. Mientras se aviva la llama, se cuentan las historias de los ancestros. La oralidad en la cocina es nuestra principal escuela de tecnología agrícola y social: aquí aprendemos cuándo sembrar según la luna y cómo curar con las plantas de la huerta.'
+        },
+        canasto: {
+            icon: '🧺',
+            title: 'Teoría de la Biodiversidad',
+            body: 'El canasto es el símbolo de la carga y la abundancia. Un canasto lleno de diversos frutos (arracacha, cidra, café, naranja) garantiza que si una cosecha falla, las otras nos sostienen. Esto es biodiversidad: la farmacia y el supermercado natural de nuestra gente.'
+        }
+    };
+    const cocinaVisited = {fogon: false, canasto: false};
+
+    function clickCocinaObj(key) {
+        cocinaVisited[key] = true;
+        document.getElementById('obj-' + key).classList.add('visited');
+        const count = Object.values(cocinaVisited).filter(Boolean).length;
+        document.getElementById('cocina-count').textContent = count;
+        document.getElementById('cocina-prog-bar').style.width = (count / 2 * 100) + '%';
+        if (count === 2) {
+            const btn = document.getElementById('btn-fogon');
+            btn.classList.add('enabled');
+            document.getElementById('cocina-progress-text').textContent = '✅ ¡Has descubierto todos los saberes de la cocina!';
+        }
+        openModal(cocinaData[key].icon, cocinaData[key].title, cocinaData[key].body);
+    }
+
+    // ─── MODAL ───────────────────────────────────────────────
+    function openModal(icon, title, body) {
+        document.getElementById('modalIcon').textContent = icon;
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalBody').textContent = body;
+        document.getElementById('modalOverlay').classList.add('open');
+    }
+    function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalBtn(); }
+    function closeModalBtn() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+    // ─── MESA COMUNITARIA ────────────────────────────────────
+    function evaluarMesa(el, correcto, msg) {
+        if (el.style.pointerEvents === 'none') return;
+        el.classList.add(correcto ? 'correct' : 'wrong');
+        el.style.pointerEvents = 'none';
+        const fb = document.getElementById('mesaFeedback');
+        fb.textContent = (correcto ? '✅ ' : '❌ ') + msg;
+        fb.className = 'mesa-feedback show ' + (correcto ? 'correct-fb' : 'wrong-fb');
+        document.getElementById('fogonVisual').textContent = correcto ? '🔥' : '💨';
+    }
+
+    // ─── RECETARIO ──────────────────────────────────────────
+    function getRecetas() {
+        try { return JSON.parse(localStorage.getItem('soberania_recetas') || '[]'); } catch { return []; }
+    }
+    function saveRecetas(arr) { localStorage.setItem('soberania_recetas', JSON.stringify(arr)); }
+
+    function publicarReceta() {
+        const plato = document.getElementById('inp-plato').value.trim();
+        const semilla = document.getElementById('inp-semilla').value.trim();
+        const relato = document.getElementById('inp-relato').value.trim();
+        const autor = document.getElementById('inp-autor').value.trim() || 'Anónimo';
+        
+        if (!plato || !semilla || !relato) {
+            alert('Por favor completa al menos el nombre del plato, la semilla y el relato.');
+            return;
+        }
+
+        const recetas = getRecetas();
+        const duplicado = recetas.find(r => r.plato.toLowerCase() === plato.toLowerCase());
+        const dupMsg = document.getElementById('duplicateMsg');
+        
+        if (duplicado) {
+            dupMsg.style.display = 'block';
+            return;
+        }
+        dupMsg.style.display = 'none';
+
+        const nueva = {
+            id: Date.now(),
+            plato: plato,
+            semilla: semilla,
+            relato: relato,
+            autor: autor,
+            fecha: new Date().toISOString(),
+            comentarios: []
+        };
+        
+        recetas.push(nueva);
+        saveRecetas(recetas);
+        renderRecetas();
+
+        document.getElementById('inp-plato').value = '';
+        document.getElementById('inp-semilla').value = '';
+        document.getElementById('inp-relato').value = '';
+        document.getElementById('inp-autor').value = '';
+        
+        alert('¡Receta publicada con éxito en el muro comunitario!');
+    }
+
+    function agregarComentario(id) {
+        const input = document.getElementById('com-inp-' + id);
+        const texto = input.value.trim();
+        if (!texto) return;
+        
+        const recetas = getRecetas();
+        const r = recetas.find(x => x.id === id);
+        if (r) {
+            r.comentarios.push({ texto: texto, ts: Date.now() });
+            saveRecetas(recetas);
+            renderRecetas();
+        }
+    }
+
+    function renderRecetas() {
+        const recetas = getRecetas();
+        const wall = document.getElementById('recetasWall');
+        const empty = document.getElementById('emptyWall');
+        
+        if (recetas.length === 0) {
+            empty.style.display = 'block';
+            wall.innerHTML = '';
+            wall.appendChild(empty);
+            return;
+        }
+        
+        if (empty) empty.style.display = 'none';
+        
+        wall.innerHTML = recetas.map(function(r) {
+            return '<div class="receta-card">' +
+                '<div class="receta-header">' +
+                    '<h4>🍽️ ' + r.plato + '</h4>' +
+                    '<span class="semilla-tag">🌱 ' + r.semilla + '</span>' +
+                '</div>' +
+                '<div class="receta-body">' +
+                    '<p>' + r.relato + '</p>' +
+                    '<p style="margin-top:10px;font-size:13px;color:var(--tierra);font-weight:600">— ' + r.autor + '</p>' +
+                '</div>' +
+                '<div class="receta-comments">' +
+                    '<div style="font-size:12.5px;font-weight:700;color:var(--text-mid);margin-bottom:8px">💬 Comentarios (' + r.comentarios.length + ')</div>' +
+                    '<div class="comment-list">' +
+                        (r.comentarios.map(function(c) {
+                            return '<div class="comment-item">' + c.texto + '</div>';
+                        }).join('') || '<div class="comment-item" style="opacity:0.5;font-style:italic">Sin comentarios aún</div>') +
+                    '</div>' +
+                    '<div class="comment-input">' +
+                        '<input type="text" id="com-inp-' + r.id + '" placeholder="Añade un comentario...">' +
+                        '<button onclick="agregarComentario(' + r.id + ')">Enviar</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+    }
+
+    // ─── EVALUACIÓN ──────────────────────────────────────────
+    let evalScore = 0;
+    let evalAnswered = [false, false, false, false];
+
+    function responder(casoIdx, btn, correcto, feedback) {
+        if (evalAnswered[casoIdx]) return;
+        
+        evalAnswered[casoIdx] = true;
+        const allBtns = btn.closest('.opciones-grid').querySelectorAll('.opcion-btn');
+        allBtns.forEach(function(b) { b.disabled = true; });
+        
+        btn.classList.add(correcto ? 'correct' : 'wrong');
+        
+        const fb = document.getElementById('fb-' + casoIdx);
+        fb.textContent = (correcto ? '✅ ' : '❌ ') + feedback;
+        fb.className = 'eval-feedback show ' + (correcto ? 'correct-fb' : 'wrong-fb');
+        
+        if (correcto) evalScore++;
+        
+        document.getElementById('next-' + casoIdx).classList.add('show');
+        
+        const pct = (evalAnswered.filter(Boolean).length / 4) * 100;
+        document.getElementById('scoreBar').style.width = pct + '%';
+        document.getElementById('scoreLabel').textContent = evalScore + ' pts';
+    }
+
+    function siguienteCaso(idx) {
+        document.getElementById('caso-' + (idx-1)).classList.remove('active');
+        document.getElementById('caso-' + idx).classList.add('active');
+        document.getElementById('evalCounter').textContent = 'Caso ' + (idx+1) + ' de 4';
+    }
+
+    function mostrarResultado() {
+        document.getElementById('caso-3').classList.remove('active');
+        const res = document.getElementById('evalResultado');
+        res.classList.add('show');
+        document.getElementById('resultadoScore').textContent = evalScore + '/4';
+        
+        const msgs = [
+            { min:0, max:1, emoji:'🌱', msg: 'Sigue explorando. El territorio tiene mucho por enseñarte. Vuelve a revisar las fases teóricas y regresa con más saberes.' },
+            { min:2, max:2, emoji:'🌿', msg: 'Buen comienzo. Vas captando los conceptos del territorio. ¡Un poco más y serás guardián de las semillas!' },
+            { min:3, max:3, emoji:'🌾', msg: '¡Muy bien! Demuestras comprensión real de la soberanía alimentaria. La vereda cuenta contigo.' },
+            { min:4, max:4, emoji:'🏆', msg: '¡Puntaje perfecto! Eres un verdadero guardián del territorio, las semillas y la memoria colectiva. ¡La comunidad te necesita!' }
+        ];
+        
+        const m = msgs.find(function(x) { return evalScore >= x.min && evalScore <= x.max; });
+        document.getElementById('resultadoEmoji').textContent = m.emoji;
+        document.getElementById('resultadoMsg').textContent = m.msg;
+    }
+
+    function reiniciarEval() {
+        evalScore = 0;
+        evalAnswered = [false, false, false, false];
+        
+        document.getElementById('evalResultado').classList.remove('show');
+        document.querySelectorAll('.caso-card').forEach(function(c) { c.classList.remove('active'); });
+        document.getElementById('caso-0').classList.add('active');
+        
+        document.querySelectorAll('.opcion-btn').forEach(function(b) {
+            b.disabled = false;
+            b.className = 'opcion-btn';
+        });
+        
+        document.querySelectorAll('.eval-feedback').forEach(function(f) {
+            f.className = 'eval-feedback';
+            f.textContent = '';
+        });
+        
+        document.querySelectorAll('.btn-siguiente').forEach(function(b) { b.classList.remove('show'); });
+        
+        document.getElementById('scoreBar').style.width = '0%';
+        document.getElementById('scoreLabel').textContent = '0 pts';
+        document.getElementById('evalCounter').textContent = 'Caso 1 de 4';
+    }
+
+    // ─── INIT ───────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+        renderRecetas();
+    });
+    </script>
+</body>
+</html>

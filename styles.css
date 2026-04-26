@@ -1,0 +1,730 @@
+/* =========================================
+   FUENTE LOCAL SOLO PARA EL LOGO
+   ========================================= */
+@font-face {
+    font-family: 'Indiano';
+    src: url('indiano.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* 🟢 PALETA "Raíces Rebeldes" */
+    --color-primary: #4b5320;
+    --color-secondary: #9b2323;
+    --color-accent: #d2b306;
+    --color-earth: #EBC985;
+    
+    /* Neutros */
+    --color-bg: #f8f5f0;
+    --color-text: #1b2e0b;
+    --color-text-light: #ffffff;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--color-bg) url('images/background.png') repeat;
+    background-size: 450px 450px;
+    background-attachment: fixed;
+    color: var(--color-text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(248, 245, 240, 0.85);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ========== HEADER ========== */
+.raícesrebeldes-header {
+    position: relative;
+    background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+                url('images/banner.jpeg') center/cover no-repeat,
+                #1a362b;
+    min-height: 35vh;
+    max-height: 55vh;
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.raícesrebeldes-header .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ========== NAVBAR OPTIMIZADA ========== */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 0 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    position: relative;
+}
+
+.navbar-brand {
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+/* ========== LOGO MULTICOLOR ========== */
+.navbar-brand .brand-title {
+    font-family: 'Indiano', 'Segoe UI', system-ui, sans-serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    letter-spacing: 5px;
+    line-height: 1.0;
+    font-weight: 500;
+    text-decoration: none;
+    color: unset;
+}
+
+.navbar-brand .brand-title span {
+    display: inline-block;
+    text-shadow: 0 1px 5px rgb(0, 0, 0);
+    transition: transform 0.3s ease;
+}
+
+/* Paleta de colores del logo */
+.navbar-brand .brand-title span:nth-child(1) { color: #555d26; }
+.navbar-brand .brand-title span:nth-child(2) { color: #E5BE01; }
+.navbar-brand .brand-title span:nth-child(3) { color: #EBC985; }
+.navbar-brand .brand-title span:nth-child(4) { color: #9b2323; }
+.navbar-brand .brand-title span:nth-child(5) { color: #4b5320; }
+.navbar-brand .brand-title span:nth-child(6) { color: #E5BE01; }
+.navbar-brand .brand-title span:nth-child(7) { color: #EBC985; }
+.navbar-brand .brand-title span:nth-child(8) { color: #9b2323; }
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+/* ========== NAVBAR & ESTADO ACTIVO ========== */
+.nav-menu a {
+    font-size: 1.0rem;
+    padding: 0.3rem 0.5rem;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+/* ✅ Resaltado amarillo al pasar el cursor O cuando tiene la clase active */
+.nav-menu a:hover,
+.nav-menu a.active {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
+
+/* ========== FOOTER ========== */
+footer {
+  background: #EBC985; /* Color beige corregido */
+  color: #555d26;
+  text-align: center;
+  padding: 1.2rem 1rem;
+  margin-top: auto;
+  width: 100%;
+  z-index: 1;
+}
+
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+}
+
+/* ========== HERO CONTENT GENERAL ========== */
+.hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem 2rem;
+    color: white;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 14px rgba(0,0,0,0.45);
+}
+
+.hero-tagline {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 3px;
+    opacity: 0.85;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    padding-top: 0.8rem;
+}
+
+/* ========== MAIN ========== */
+main {
+    flex: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 1.5rem;
+    width: 100%;
+    z-index: 1;
+}
+
+.content-section > div {
+    background: white;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--color-earth);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.content-section > div.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.content-section h2 {
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.content-section p, .content-section ul {
+    margin-top: 0.5rem;
+    line-height: 1.7;
+}
+
+.content-section ul {
+    margin-left: 1.5rem;
+}
+
+/* ========== FOOTER ========== */
+footer {
+  background: #EBC985; /* ✅ Color beige corregido */
+  color: #555d26;
+  text-align: center;
+  padding: 1.2rem 1rem;
+  margin-top: auto;
+  width: 100%;
+  z-index: 1;
+}
+/* ========== BOTONES ========== */
+a.doc-type, .doc-type {
+    display: inline-block;
+    background: var(--color-earth);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+}
+
+a.doc-type:hover, .doc-type:hover {
+    background: var(--color-primary);
+    transform: translateY(-2px);
+}
+
+.btn-referencia {
+    display: block;
+    background: var(--color-earth);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.btn-referencia:hover {
+    background: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-marco-teorico {
+    display: inline-block;
+    background: var(--color-earth);
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(138,90,68,0.3);
+    transition: all 0.3s ease;
+    border: 2px solid var(--color-earth);
+}
+
+.btn-marco-teorico:hover {
+    background: transparent;
+    color: var(--color-earth);
+    transform: translateY(-2px);
+}
+
+/* ========== BANNERS POR ESTACIÓN ========== */
+body.page-estacionuno .raícesrebeldes-header {
+    background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+                url('images/banner-estacionuno.jpg') center/cover no-repeat, #1a362b;
+}
+
+body.page-estaciondos .raícesrebeldes-header {
+    background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+                url('images/banner-estaciondos.jpeg') center/cover no-repeat, #1a362b;
+}
+
+body.page-estaciontres .raícesrebeldes-header {
+    background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+                url('images/banner-estaciontres.jpeg') center/cover no-repeat, #1a362b;
+}
+
+body.page-estacioncuatro .raícesrebeldes-header {
+    background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+                url('images/banner-estacioncuatro.jpg') center/cover no-repeat, #1a362b;
+                
+}
+
+
+body.page-contacto .raícesrebeldes-header {
+    background: linear-gradient(135deg, rgba(26, 54, 43, 0.9), rgba(138, 90, 68, 0.8)),
+                url('images/banner-contacto.jpeg') center/cover no-repeat, #1a362b;
+                
+}
+
+/* ========== ESTILOS JUEGOS ========== */
+.game-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #222;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+}
+
+.game-wrapper canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #87ceeb;
+    touch-action: none;
+}
+
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 54, 43, 0.85);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.game-overlay h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.game-overlay p { margin: 0.3rem 0 1rem; font-size: 0.95rem; opacity: 0.9; }
+
+.game-overlay button {
+    padding: 0.8rem 2rem;
+    background: var(--color-accent);
+    color: var(--color-primary);
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.game-overlay button:hover { transform: translateY(-2px); }
+
+.hidden { display: none !important; }
+
+.touch-controls {
+    display: none;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.touch-btn {
+    padding: 1rem;
+    background: #e2e8f0;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    flex: 1;
+    cursor: pointer;
+}
+
+.region-btn {
+    padding: 0.8rem;
+    background: white;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-text);
+    transition: 0.2s;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.region-btn:hover { border-color: var(--color-earth); background: #f0fdf4; }
+.region-btn.correct { background: var(--color-earth); color: white; border-color: var(--color-earth); }
+.region-btn.incorrect { background: #e76f51; color: white; border-color: #e76f51; }
+
+/* Centrado títulos juego */
+.content-section .fade-in h2 { text-align: center; margin-bottom: 0.5rem; }
+
+.content-section .fade-in > p,
+.content-section .fade-in .quiz-intro {
+    text-align: center;
+    margin: 0 auto 1.5rem;
+    max-width: 700px;
+    font-size: 1.05rem;
+    color: var(--color-text);
+}
+
+/* ========== MEDIA QUERIES ========== */
+@media (max-width: 900px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        order: 3;
+        margin-top: 1rem;
+        padding: 0;
+        list-style: none;
+        gap: 0.5rem;
+    }
+
+    .nav-menu.open { display: flex; }
+
+    .mobile-toggle {
+        display: block;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 0.4rem 0.7rem;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 20;
+    }
+
+    .nav-menu li { width: 100%; }
+    .nav-menu a { display: block; padding: 0.6rem 1rem; font-size: 1.1rem; text-align: left; border-radius: 6px; }
+    .navbar-brand .brand-title { font-size: clamp(2.2rem, 8vw, 3rem); }
+}
+
+/* =========================================
+   PÁGINA DE BIENVENIDA - LA RUTA DE LA SEMILLA
+   ========================================= */
+
+/* Hero especial para bienvenida con imagen banner-pruebas.jpeg y opacidad ajustada */
+body.page-bienvenida .raícesrebeldes-header {
+    background: linear-gradient(135deg, rgba(75, 83, 32, 0.65), rgba(138, 90, 68, 0.65)),
+                url('images/banner-pruebas.jpeg') center/cover no-repeat,
+                #4b5320;
+    min-height: 100vh;
+    max-height: none;
+    padding-bottom: 4rem;
+}
+
+.bienvenida-hero {
+    justify-content: center; /* Alineación centrada solicitada */
+    padding: 3rem 1rem;
+}
+
+.hero-greeting {
+    font-size: 1.5rem;
+    color: var(--color-earth);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeInDown 1s ease forwards;
+}
+
+.hero-title-ruta {
+    font-size: clamp(3.5rem, 10vw, 6.5rem);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.3s forwards;
+}
+
+.hero-subtitle-ruta {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.95);
+    font-weight: 400;
+    margin-bottom: 3rem;
+    max-width: 700px;
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.6s forwards;
+}
+
+/* Botón principal de inicio */
+.btn-iniciar-ruta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--color-accent);
+    color: var(--color-primary);
+    padding: 1.3rem 3.5rem;
+    border-radius: 50px;
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(210, 179, 6, 0.4);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.9s forwards;
+}
+
+.btn-iniciar-ruta:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(210, 179, 6, 0.6);
+    background: white;
+}
+
+.btn-iniciar-ruta .arrow {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-iniciar-ruta:hover .arrow {
+    transform: translateX(8px);
+}
+
+/* Sección de introducción */
+.ruta-intro {
+    background: white;
+    padding: 5rem 2rem;
+    position: relative;
+}
+
+.ruta-intro::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: white;
+    transform: skewY(-3deg);
+    z-index: 0;
+}
+
+.intro-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.intro-content h2 {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+.intro-text {
+    font-size: 1.3rem;
+    color: var(--color-text);
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+}
+
+/* Cards de la ruta */
+.ruta-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+}
+
+.ruta-card {
+    background: linear-gradient(135deg, #f8f5f0 0%, white 100%);
+    padding: 2.5rem 2rem;
+    border-radius: 15px;
+    border: 3px solid var(--color-earth);
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.ruta-card.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ruta-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(75, 83, 32, 0.2);
+    border-color: var(--color-primary);
+}
+
+.card-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.ruta-card h3 {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+}
+
+.ruta-card p {
+    color: var(--color-text);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* CTA Final */
+.cta-final {
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeInUp 1s ease 1.2s forwards;
+}
+
+.btn-empezar-ahora {
+    display: inline-block;
+    background: var(--color-secondary);
+    color: white;
+    padding: 1.5rem 4rem;
+    border-radius: 50px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(155, 35, 35, 0.4);
+    transition: all 0.4s ease;
+}
+
+.btn-empezar-ahora:hover {
+    background: var(--color-primary);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(75, 83, 32, 0.5);
+}
+
+.tiempo-estimado {
+    margin-top: 1.5rem;
+    color: var(--color-text);
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Animaciones */
+@keyframes fadeInDown {
+    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-30px); }
+}
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(30px); }
+}
+
+/* Responsive Bienvenida */
+@media (max-width: 768px) {
+    .hero-title-ruta { font-size: clamp(2.5rem, 12vw, 4rem); }
+    .hero-subtitle-ruta { font-size: 1.1rem; }
+    .btn-iniciar-ruta { padding: 1rem 2.5rem; font-size: 1.1rem; }
+    .ruta-intro { padding: 3rem 1.5rem; }
+    .intro-content h2 { font-size: 2rem; }
+    .intro-text { font-size: 1.1rem; }
+    .ruta-cards { grid-template-columns: 1fr; gap: 1.5rem; }
+    .btn-empezar-ahora { padding: 1.2rem 3rem; font-size: 1.2rem; }
+}

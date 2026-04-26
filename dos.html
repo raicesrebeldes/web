@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Matas en la Casa – Huerta Urbana</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --vd:#2d6a4f;--vm:#40916c;--vc:#74c69d;--vs:#d8f3dc;
+  --tierra:#8b5e3c;--tierrac:#c9a87c;--crema:#fefae0;
+  --naranja:#e76f51;--sol:#f4a261;--sombra:rgba(45,106,79,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--crema);
+  background-image:radial-gradient(circle at 10% 20%,rgba(116,198,157,.13) 0%,transparent 50%),
+  radial-gradient(circle at 90% 80%,rgba(244,162,97,.1) 0%,transparent 50%);
+  min-height:100vh;color:#2c3e50;}
+
+.site-header{background:linear-gradient(135deg,var(--vd) 0%,var(--vm) 60%,var(--vc) 100%);
+  padding:2.5rem 1rem 4rem;position:relative;overflow:hidden;}
+.site-header::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:60px;
+  background:var(--crema);clip-path:ellipse(55% 100% at 50% 100%);}
+.badge-fase{background:rgba(255,255,255,.2);color:#fff;font-size:.73rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;padding:.35rem .85rem;border-radius:50px;
+  border:1px solid rgba(255,255,255,.35);display:inline-block;margin-bottom:1rem;}
+.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5vw,3rem);
+  font-weight:900;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.2);}
+.site-header h1 span{color:var(--sol);}
+.site-header p.lead{color:rgba(255,255,255,.88);font-size:1rem;max-width:600px;margin:0 auto;}
+.leaf-deco{position:absolute;font-size:5rem;opacity:.07;pointer-events:none;user-select:none;}
+.leaf-deco.l1{top:-10px;right:5%;transform:rotate(20deg);font-size:8rem;}
+.leaf-deco.l2{bottom:20px;left:2%;transform:rotate(-15deg);font-size:6rem;}
+
+.bloom-card{background:#fff;border-left:5px solid var(--vm);border-radius:12px;
+  padding:1.1rem 1.5rem;box-shadow:0 4px 20px var(--sombra);}
+.bloom-title{font-weight:900;color:var(--vd);font-size:.95rem;text-transform:uppercase;letter-spacing:.06em;}
+
+.instrucciones{background:var(--vs);border-radius:16px;padding:1.3rem 1.6rem;
+  border:1.5px dashed var(--vc);}
+.instrucciones h5{color:var(--vd);font-weight:900;}
+
+.escenario-wrap{border-radius:18px;overflow:hidden;border:2px solid rgba(64,145,108,.3);
+  box-shadow:0 6px 32px var(--sombra);}
+#escenarioSVG{width:100%;display:block;}
+
+.seccion-titulo{font-family:'Playfair Display',serif;font-weight:700;color:var(--vd);
+  font-size:1.1rem;border-bottom:2px solid var(--vc);padding-bottom:.4rem;margin-bottom:1rem;}
+
+.objeto-btn{background:#fff;border:2px solid transparent;border-radius:16px;padding:.8rem .4rem;
+  cursor:pointer;transition:all .2s ease;text-align:center;position:relative;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);user-select:none;outline:none;width:100%;}
+.objeto-btn:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 8px 22px var(--sombra);border-color:var(--vc);}
+.objeto-btn .emoji{font-size:2.1rem;display:block;line-height:1.2;}
+.objeto-btn .nombre{font-size:.73rem;font-weight:700;color:#555;margin-top:.25rem;line-height:1.2;}
+.objeto-btn.correcto{background:var(--vs);border-color:var(--vm);pointer-events:none;}
+.objeto-btn.correcto .nombre{color:var(--vd);}
+.objeto-btn.incorrecto{background:#fff0f0;border-color:#e74c3c;pointer-events:none;
+  animation:sacudir .4s ease;}
+.objeto-btn.incorrecto .nombre{color:#c0392b;}
+@keyframes sacudir{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}
+  40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+.check-overlay{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;}
+.correcto .check-overlay{display:flex;background:var(--vm);color:#fff;}
+.incorrecto .check-overlay{display:flex;background:#e74c3c;color:#fff;}
+
+.feedback-box{background:#fff;border-radius:12px;padding:1rem 1.2rem;
+  border-left:4px solid var(--vm);box-shadow:0 4px 16px var(--sombra);font-size:.9rem;
+  animation:fadeUp .3s ease both;min-height:58px;}
+.feedback-box.error{border-left-color:#e74c3c;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.progreso-label{font-size:.82rem;font-weight:700;color:var(--vd);margin-bottom:.3rem;}
+.progress{height:10px;border-radius:50px;}
+.progress-bar{background:linear-gradient(90deg,var(--vc),var(--vd));border-radius:50px;transition:width .4s ease;}
+
+.resultado-final{border-radius:20px;padding:2rem;text-align:center;display:none;animation:fadeUp .5s ease both;}
+.resultado-final.exito{background:linear-gradient(135deg,var(--vs),#b7e4c7);border:2px solid var(--vm);}
+.resultado-final.falta{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:2px solid var(--sol);}
+.resultado-final .icono-resultado{font-size:4rem;margin-bottom:.75rem;}
+.resultado-final h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;margin-bottom:.5rem;}
+.resultado-final.exito h3{color:var(--vd);}
+.resultado-final.falta h3{color:#b45309;}
+.resultado-final p{font-size:.96rem;color:#444;}
+
+.btn-reiniciar{background:var(--vd);color:#fff;border:none;border-radius:50px;padding:.6rem 2rem;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.92rem;cursor:pointer;
+  transition:background .2s,transform .15s;box-shadow:0 4px 14px var(--sombra);}
+.btn-reiniciar:hover{background:var(--vm);transform:translateY(-2px);}
+.btn-verificar{background:var(--naranja);color:#fff;border:none;border-radius:50px;padding:.6rem 2rem;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.92rem;cursor:pointer;
+  transition:background .2s,transform .15s;box-shadow:0 4px 14px rgba(231,111,81,.3);display:none;}
+.btn-verificar:hover{background:#cf5f41;transform:translateY(-2px);}
+
+.abono-card{background:#fff;border-radius:14px;padding:1rem 1.2rem;border:1.5px solid var(--vc);
+  box-shadow:0 2px 12px var(--sombra);transition:transform .2s;}
+.abono-card:hover{transform:translateY(-3px);}
+.abono-card .abono-emoji{font-size:1.8rem;margin-bottom:.4rem;}
+.abono-card h6{font-weight:800;color:var(--vd);margin-bottom:.2rem;}
+.abono-card p{font-size:.82rem;color:#555;margin:0;}
+
+footer{background:var(--vd);color:rgba(255,255,255,.75);font-size:.82rem;padding:1.2rem;text-align:center;margin-top:3rem;}
+</style>
+</head>
+<body>
+
+<header class="site-header text-center">
+  <div class="leaf-deco l1">🌿</div>
+  <div class="leaf-deco l2">🍃</div>
+  <div class="container">
+    <span class="badge-fase">Fase 2 · Taxonomía de Bloom – Comprender</span>
+    <h1 class="mb-3">🌱 <span>Matas</span> en la Casa</h1>
+    <p class="lead mx-auto">Aprende qué necesita una huerta urbana y cómo los residuos del hogar se convierten en abono orgánico natural.</p>
+  </div>
+</header>
+
+<main class="container py-4">
+
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="bloom-card d-flex align-items-start gap-3">
+        <span style="font-size:1.8rem">🧠</span>
+        <div>
+          <div class="bloom-title">Nivel: Comprensión e Interpretación</div>
+          <p class="mb-0 mt-1" style="font-size:.92rem;color:#444;">No solo recuerdes conceptos: <strong>explícalos, relaciónalos con tu entorno</strong> e interpreta cómo aplicarlos en la vida cotidiana.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="instrucciones">
+        <h5 class="mb-2">📋 ¿Cómo jugar?</h5>
+        <ol class="mb-0 ps-3" style="font-size:.93rem;line-height:1.9;">
+          <li>Observa todos los objetos en pantalla — algunos sirven para la huerta, otros <strong>no</strong>.</li>
+          <li>Haz clic en los que crees que <strong>necesita una huerta urbana</strong> para funcionar.</li>
+          <li>Fíjate en la reacción del niño 👦 y lee la explicación que aparece abajo.</li>
+          <li>Cuando estés listo, presiona <strong>"Ver resultado"</strong>.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCENARIO BALCÓN SVG -->
+  <div class="row justify-content-center mb-3">
+    <div class="col-lg-10">
+      <div class="escenario-wrap">
+        <svg id="escenarioSVG" viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- CIELO -->
+          <rect x="0" y="0" width="700" height="180" fill="#6db8e3"/>
+          <rect x="0" y="0" width="700" height="70" fill="#4fa3d1" opacity=".4"/>
+
+          <!-- SOL -->
+          <circle cx="630" cy="50" r="36" fill="#FFD93D"/>
+          <circle cx="630" cy="50" r="27" fill="#FFE97A"/>
+          <g stroke="#FFD93D" stroke-width="3" stroke-linecap="round">
+            <line x1="630" y1="4"   x2="630" y2="-4"/>
+            <line x1="630" y1="96"  x2="630" y2="104"/>
+            <line x1="584" y1="50"  x2="576" y2="50"/>
+            <line x1="676" y1="50"  x2="684" y2="50"/>
+            <line x1="597" y1="17"  x2="591" y2="11"/>
+            <line x1="663" y1="83"  x2="669" y2="89"/>
+            <line x1="663" y1="17"  x2="669" y2="11"/>
+            <line x1="597" y1="83"  x2="591" y2="89"/>
+          </g>
+
+          <!-- NUBES -->
+          <g fill="white" opacity=".82">
+            <ellipse cx="110" cy="42" rx="48" ry="22"/>
+            <ellipse cx="148" cy="34" rx="34" ry="18"/>
+            <ellipse cx="74"  cy="48" rx="30" ry="16"/>
+          </g>
+          <g fill="white" opacity=".65">
+            <ellipse cx="380" cy="28" rx="40" ry="17"/>
+            <ellipse cx="412" cy="21" rx="27" ry="13"/>
+            <ellipse cx="348" cy="33" rx="25" ry="13"/>
+          </g>
+
+          <!-- EDIFICIOS FONDO -->
+          <rect x="0"   y="95" width="55"  height="95" fill="#b5a89a"/>
+          <rect x="5"   y="88" width="45"  height="20" fill="#c4b8ac"/>
+          <rect x="12"  y="100" width="9"  height="12" fill="#7ec8e3" opacity=".7"/>
+          <rect x="26"  y="100" width="9"  height="12" fill="#7ec8e3" opacity=".7"/>
+          <rect x="12"  y="118" width="9"  height="12" fill="#7ec8e3" opacity=".7"/>
+          <rect x="26"  y="118" width="9"  height="12" fill="#7ec8e3" opacity=".7"/>
+
+          <rect x="58"  y="110" width="48" height="80" fill="#c9b9a8"/>
+          <rect x="63"  y="104" width="38" height="18" fill="#d4c5b5"/>
+          <rect x="66"  y="116" width="9"  height="11" fill="#7ec8e3" opacity=".6"/>
+          <rect x="80"  y="116" width="9"  height="11" fill="#7ec8e3" opacity=".6"/>
+          <rect x="66"  y="132" width="9"  height="11" fill="#7ec8e3" opacity=".6"/>
+          <rect x="80"  y="132" width="9"  height="11" fill="#7ec8e3" opacity=".6"/>
+
+          <!-- PARED BALCÓN -->
+          <rect x="0" y="160" width="700" height="150" fill="#e0ccb0"/>
+          <!-- textura ladrillo sutil -->
+          <g stroke="#c8b498" stroke-width=".7" fill="none" opacity=".45">
+            <line x1="0" y1="177" x2="700" y2="177"/>
+            <line x1="0" y1="195" x2="700" y2="195"/>
+            <line x1="0" y1="213" x2="700" y2="213"/>
+            <line x1="0" y1="231" x2="700" y2="231"/>
+            <line x1="0" y1="249" x2="700" y2="249"/>
+            <line x1="0" y1="267" x2="700" y2="267"/>
+            <line x1="0" y1="285" x2="700" y2="285"/>
+            <line x1="0" y1="303" x2="700" y2="303"/>
+          </g>
+          <g stroke="#c8b498" stroke-width=".7" fill="none" opacity=".35">
+            <line x1="88"  y1="160" x2="88"  y2="310"/>
+            <line x1="176" y1="169" x2="176" y2="310"/>
+            <line x1="264" y1="160" x2="264" y2="310"/>
+            <line x1="352" y1="169" x2="352" y2="310"/>
+            <line x1="440" y1="160" x2="440" y2="310"/>
+            <line x1="528" y1="169" x2="528" y2="310"/>
+            <line x1="616" y1="160" x2="616" y2="310"/>
+          </g>
+
+          <!-- BARANDAL -->
+          <rect x="0" y="152" width="700" height="14" fill="#7a5c1e" rx="3"/>
+          <!-- columnas barandal -->
+          <g fill="#9a7828">
+            <rect x="18"  y="152" width="7" height="68" rx="2"/>
+            <rect x="72"  y="152" width="7" height="68" rx="2"/>
+            <rect x="126" y="152" width="7" height="68" rx="2"/>
+            <rect x="180" y="152" width="7" height="68" rx="2"/>
+            <rect x="234" y="152" width="7" height="68" rx="2"/>
+            <rect x="288" y="152" width="7" height="68" rx="2"/>
+            <rect x="342" y="152" width="7" height="68" rx="2"/>
+            <rect x="396" y="152" width="7" height="68" rx="2"/>
+            <rect x="450" y="152" width="7" height="68" rx="2"/>
+            <rect x="504" y="152" width="7" height="68" rx="2"/>
+            <rect x="558" y="152" width="7" height="68" rx="2"/>
+            <rect x="612" y="152" width="7" height="68" rx="2"/>
+            <rect x="666" y="152" width="7" height="68" rx="2"/>
+          </g>
+          <rect x="0" y="214" width="700" height="10" fill="#7a5c1e" rx="2"/>
+
+          <!-- PISO BALCÓN -->
+          <rect x="0" y="224" width="700" height="86" fill="#bb9f7a"/>
+          <g stroke="#9e8060" stroke-width=".8" fill="none" opacity=".5">
+            <line x1="0" y1="242" x2="700" y2="242"/>
+            <line x1="0" y1="260" x2="700" y2="260"/>
+            <line x1="0" y1="278" x2="700" y2="278"/>
+            <line x1="0" y1="296" x2="700" y2="296"/>
+          </g>
+
+          <!-- PLANTAS DECORATIVAS FIJAS -->
+          <!-- maceta izquierda grande -->
+          <rect x="14" y="194" width="36" height="30" fill="#7a5320" rx="3"/>
+          <rect x="10" y="190" width="44" height="8"  fill="#8b6230" rx="2"/>
+          <ellipse cx="32" cy="188" rx="22" ry="12" fill="#2d8a52"/>
+          <ellipse cx="18" cy="178" rx="15" ry="10" fill="#3da865"/>
+          <ellipse cx="46" cy="181" rx="16" ry="10" fill="#2d8a52"/>
+          <ellipse cx="32" cy="170" rx="10" ry="8"  fill="#52c178"/>
+
+          <!-- maceta derecha -->
+          <rect x="650" y="197" width="30" height="26" fill="#8b6230" rx="3"/>
+          <rect x="646" y="193" width="38" height="7"  fill="#9a7040" rx="2"/>
+          <ellipse cx="665" cy="191" rx="17" ry="10" fill="#3da865"/>
+          <ellipse cx="654" cy="183" rx="11" ry="7"  fill="#2d8a52"/>
+          <ellipse cx="676" cy="185" rx="12" ry="7"  fill="#52c178"/>
+
+          <!-- ZONA DONDE CAEN LOS ÍTEMS SELECCIONADOS -->
+          <g id="zonaItems"/>
+
+          <!-- ════════════ NIÑO LATINO ════════════ -->
+          <g id="ninoGroup" transform="translate(490,100)">
+
+            <!-- sombra pies -->
+            <ellipse cx="0" cy="168" rx="26" ry="6" fill="#8b6230" opacity=".3"/>
+
+            <!-- PIERNAS -->
+            <rect x="-22" y="110" width="20" height="56" fill="#3b5fa0" rx="5"/>
+            <rect x="2"   y="110" width="20" height="56" fill="#3b5fa0" rx="5"/>
+            <!-- zapatos -->
+            <ellipse cx="-12" cy="168" rx="17" ry="7"  fill="#2a1a0a"/>
+            <ellipse cx="12"  cy="168" rx="17" ry="7"  fill="#2a1a0a"/>
+            <!-- detalles zapato -->
+            <line x1="-22" y1="164" x2="-4"  y2="164" stroke="#555" stroke-width="1.5"/>
+            <line x1="4"   y1="164" x2="22"  y2="164" stroke="#555" stroke-width="1.5"/>
+
+            <!-- CUERPO camisa franjas -->
+            <rect x="-26" y="55" width="52" height="62" fill="#3a9e5f" rx="6"/>
+            <rect x="-26" y="68" width="52" height="7"  fill="#2d8a52" rx="2"/>
+            <rect x="-26" y="83" width="52" height="7"  fill="#2d8a52" rx="2"/>
+            <rect x="-26" y="98" width="52" height="7"  fill="#2d8a52" rx="2"/>
+
+            <!-- cuello -->
+            <rect x="-10" y="50" width="20" height="12" fill="#c8784a" rx="3"/>
+
+            <!-- BRAZOS -->
+            <!-- brazo izq -->
+            <path d="M-26 65 Q-52 80 -50 108" stroke="#c8784a" stroke-width="15" fill="none" stroke-linecap="round"/>
+            <!-- brazo der -->
+            <path d="M26  65 Q52  80 50  108" stroke="#c8784a" stroke-width="15" fill="none" stroke-linecap="round"/>
+            <!-- manos -->
+            <circle cx="-50" cy="110" r="10" fill="#c8784a"/>
+            <circle cx="50"  cy="110" r="10" fill="#c8784a"/>
+            <!-- dedos izq -->
+            <circle cx="-60" cy="107" r="5" fill="#c8784a"/>
+            <circle cx="-57" cy="120" r="5" fill="#c8784a"/>
+            <!-- dedos der -->
+            <circle cx="60"  cy="107" r="5" fill="#c8784a"/>
+            <circle cx="57"  cy="120" r="5" fill="#c8784a"/>
+
+            <!-- CABEZA -->
+            <circle cx="0" cy="24" r="34" fill="#c8784a"/>
+
+            <!-- cabello oscuro -->
+            <path d="M-34 20 Q-28 -16 0 -18 Q28 -16 34 20 Q24 4 0 2 Q-24 4 -34 20Z" fill="#1e0f04"/>
+            <!-- patillas -->
+            <rect x="-36" y="14" width="8"  height="16" fill="#1e0f04" rx="3"/>
+            <rect x="28"  y="14" width="8"  height="16" fill="#1e0f04" rx="3"/>
+
+            <!-- orejas -->
+            <ellipse cx="-34" cy="26" rx="8" ry="10" fill="#c8784a"/>
+            <ellipse cx="34"  cy="26" rx="8" ry="10" fill="#c8784a"/>
+            <!-- interior orejas -->
+            <ellipse cx="-34" cy="26" rx="4" ry="6" fill="#b56840" opacity=".6"/>
+            <ellipse cx="34"  cy="26" rx="4" ry="6" fill="#b56840" opacity=".6"/>
+
+            <!-- ──── CARAS ──── -->
+
+            <!-- CARA NORMAL (por defecto) -->
+            <g id="caraNormal">
+              <ellipse cx="-12" cy="22" rx="5.5" ry="6.5" fill="#1e0f04"/>
+              <ellipse cx="12"  cy="22" rx="5.5" ry="6.5" fill="#1e0f04"/>
+              <circle cx="-10" cy="20" r="2"  fill="white"/>
+              <circle cx="14"  cy="20" r="2"  fill="white"/>
+              <path d="M-14 14 Q-9 11 -4 14"  stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M4   14 Q9  11 14 14"  stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M-12 36 Q0 43 12 36"  stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <ellipse cx="-18" cy="34" rx="7" ry="4" fill="#d4895e" opacity=".45"/>
+              <ellipse cx="18"  cy="34" rx="7" ry="4" fill="#d4895e" opacity=".45"/>
+            </g>
+
+            <!-- CARA FELIZ (correcto) -->
+            <g id="caraFeliz" style="display:none">
+              <!-- ojos arco feliz -->
+              <path d="M-17 18 Q-12 26 -7 18" stroke="#1e0f04" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M7   18 Q12  26 17 18" stroke="#1e0f04" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <!-- cejas altas -->
+              <path d="M-16 10 Q-11  6 -6 10"  stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M6   10 Q11   6 16 10"  stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- sonrisa grande con dientes -->
+              <path d="M-16 32 Q0 50 16 32"   stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M-10 32 Q0 40 10 32"   fill="white" stroke="none"/>
+              <!-- mejillas muy rojas -->
+              <ellipse cx="-20" cy="32" rx="9" ry="6"  fill="#e07050" opacity=".55"/>
+              <ellipse cx="20"  cy="32" rx="9" ry="6"  fill="#e07050" opacity=".55"/>
+            </g>
+
+            <!-- CARA DUDA (incorrecto) -->
+            <g id="caraDuda" style="display:none">
+              <!-- ojos semicerrados -->
+              <ellipse cx="-12" cy="23" rx="5.5" ry="4" fill="#1e0f04"/>
+              <ellipse cx="12"  cy="23" rx="5.5" ry="4" fill="#1e0f04"/>
+              <circle cx="-10" cy="21" r="1.5" fill="white"/>
+              <circle cx="14"  cy="21" r="1.5" fill="white"/>
+              <!-- cejas fruncidas hacia arriba interno -->
+              <path d="M-16 12 Q-9 17 -4 12"  stroke="#1e0f04" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+              <path d="M4   12 Q9  17 14 12"  stroke="#1e0f04" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+              <!-- boca torcida -->
+              <path d="M-10 40 Q-2 37 6 40 Q10 43 6 46" stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- sudor -->
+              <ellipse cx="28" cy="8" rx="5" ry="8"  fill="#6db8e3" opacity=".7" transform="rotate(-20,28,8)"/>
+              <ellipse cx="32" cy="0" rx="3" ry="5"  fill="#6db8e3" opacity=".6" transform="rotate(-20,32,0)"/>
+            </g>
+
+            <!-- CARA EXCELENTE (al finalizar con todos correctos) -->
+            <g id="caraExcelente" style="display:none">
+              <path d="M-17 18 Q-12 26 -7 18" stroke="#1e0f04" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M7   18 Q12  26 17 18" stroke="#1e0f04" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M-16 10 Q-11  6 -6 10"  stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M6   10 Q11   6 16 10"  stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M-18 30 Q0 52 18 30"   stroke="#1e0f04" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M-12 30 Q0 44 12 30"   fill="white" stroke="none"/>
+              <ellipse cx="-20" cy="30" rx="10" ry="7"  fill="#e07050" opacity=".6"/>
+              <ellipse cx="20"  cy="30" rx="10" ry="7"  fill="#e07050" opacity=".6"/>
+              <!-- estrellas alrededor cabeza -->
+              <text x="-60" y="-8"  font-size="16" font-family="sans-serif">⭐</text>
+              <text x="38"  y="-8"  font-size="16" font-family="sans-serif">⭐</text>
+              <text x="-72" y="12"  font-size="14" font-family="sans-serif">✨</text>
+              <text x="50"  y="12"  font-size="14" font-family="sans-serif">✨</text>
+            </g>
+          </g>
+          <!-- fin niño -->
+
+          <!-- BOCADILLO DIÁLOGO -->
+          <g id="bocadilloNino" style="display:none">
+            <rect id="bocadilloRect" x="320" y="62" width="178" height="44" rx="12"
+              fill="white" stroke="#40916c" stroke-width="2"/>
+            <!-- cola bocadillo apunta al niño -->
+            <polygon points="494,90 516,96 496,100" fill="white"/>
+            <polygon points="494,90 516,96 496,100" fill="none" stroke="#40916c" stroke-width="2"/>
+            <polygon points="494,90 516,96 496,100" fill="white" stroke="none"/>
+            <text id="bocadilloTxt" x="409" y="89" text-anchor="middle"
+              font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#2d6a4f">
+              ¡Muy bien!
+            </text>
+          </g>
+
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESO -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="progreso-label">Elementos correctos: <span id="contadorTexto">0 / 10</span></div>
+      <div class="progress"><div class="progress-bar" id="barraProgreso" role="progressbar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- GRID TODOS LOS OBJETOS MEZCLADOS -->
+  <div class="row justify-content-center mb-2">
+    <div class="col-lg-10">
+      <div class="seccion-titulo">🧩 Objetos disponibles — ¿cuáles necesita tu huerta?</div>
+      <div class="row g-2" id="gridTodos"></div>
+    </div>
+  </div>
+
+  <!-- FEEDBACK -->
+  <div class="row justify-content-center mt-3">
+    <div class="col-lg-10">
+      <div class="feedback-box" id="feedbackBox">
+        <span style="color:#aaa;">Haz clic en un objeto para ver la retroalimentación aquí.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTONES -->
+  <div class="row justify-content-center mt-4 g-2">
+    <div class="col-auto"><button class="btn-verificar" id="btnVerificar" onclick="mostrarResultado()">🌿 Ver resultado</button></div>
+    <div class="col-auto"><button class="btn-reiniciar" onclick="reiniciar()">🔄 Reiniciar</button></div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="row justify-content-center mt-4">
+    <div class="col-lg-10">
+      <div class="resultado-final" id="resultadoFinal">
+        <div class="icono-resultado" id="iconoResultado"></div>
+        <h3 id="tituloResultado"></h3>
+        <p id="textoResultado"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO ABONOS -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-10">
+      <h2 class="seccion-titulo" style="font-family:'Playfair Display',serif;font-size:1.25rem;">🌍 ¿Por qué los residuos domésticos son abono?</h2>
+      <p class="mb-3" style="font-size:.94rem;color:#444;">Los residuos orgánicos del hogar aportan nutrientes esenciales. Al descomponerse, mejoran el suelo y estimulan la vida microbiana que beneficia a las plantas.</p>
+      <div class="row g-3">
+        <div class="col-sm-4"><div class="abono-card"><div class="abono-emoji">🍌</div><h6>Cáscaras de banano</h6><p>Ricas en <strong>potasio</strong>. Fortalecen tallos, raíces y mejoran la floración.</p></div></div>
+        <div class="col-sm-4"><div class="abono-card"><div class="abono-emoji">🥚</div><h6>Cáscaras de huevo</h6><p>Aportan <strong>calcio</strong> al suelo. Regulan la acidez y refuerzan paredes celulares.</p></div></div>
+        <div class="col-sm-4"><div class="abono-card"><div class="abono-emoji">☕</div><h6>Café usado</h6><p>Fuente de <strong>nitrógeno</strong>. Mejora el sustrato y atrae lombrices benéficas.</p></div></div>
+        <div class="col-sm-4"><div class="abono-card"><div class="abono-emoji">🍊</div><h6>Cáscara de naranja</h6><p>Repele insectos dañinos y aporta micronutrientes valiosos al compost.</p></div></div>
+        <div class="col-sm-4"><div class="abono-card"><div class="abono-emoji">🥬</div><h6>Hojas de verduras</h6><p>Ricas en <strong>nitrógeno</strong> y fibra. Se descomponen rápido y enriquecen el suelo.</p></div></div>
+        <div class="col-sm-4"><div class="abono-card"><div class="abono-emoji">🌿</div><h6>Yerba/mate usado</h6><p>Aporta <strong>minerales</strong> y activa la descomposición del compost orgánico.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer><span>🌿 Raíces Rebeldes · Estación 2 · Comprensión e Interpretación.</span></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ══════════════════════════
+// DATOS
+// ══════════════════════════
+const NECESARIOS = [
+  {id:'sol',      emoji:'☀️', nombre:'Luz solar',          svgX:80,  svgY:245,
+   info:'☀️ <strong>Luz solar:</strong> indispensable para la fotosíntesis. Sin ella, las plantas no pueden producir su propio alimento.'},
+  {id:'agua',     emoji:'💧', nombre:'Agua',                svgX:130, svgY:246,
+   info:'💧 <strong>Agua:</strong> transporta nutrientes dentro de la planta y mantiene los tejidos vivos. Sin agua, la planta se marchita.'},
+  {id:'matera',   emoji:'🪴', nombre:'Matera',              svgX:180, svgY:241,
+   info:'🪴 <strong>Matera:</strong> permite cultivar en espacios pequeños como balcones y terrazas urbanas.'},
+  {id:'semillas', emoji:'🌱', nombre:'Semillas',            svgX:230, svgY:246,
+   info:'🌱 <strong>Semillas:</strong> punto de partida de todo cultivo. Elige variedades adaptadas para espacios reducidos.'},
+  {id:'tierra',   emoji:'🌍', nombre:'Tierra abonada',      svgX:278, svgY:244,
+   info:'🌍 <strong>Tierra abonada:</strong> sustrato rico en nutrientes. Garantiza raíces sanas y crecimiento vigoroso.'},
+  {id:'banano',   emoji:'🍌', nombre:'Cáscaras de banano',  svgX:326, svgY:246,
+   info:'🍌 <strong>Cáscaras de banano:</strong> aportan potasio, nutriente clave para el desarrollo de raíces y frutos.'},
+  {id:'huevo',    emoji:'🥚', nombre:'Cáscaras de huevo',   svgX:374, svgY:244,
+   info:'🥚 <strong>Cáscaras de huevo:</strong> fuente de calcio natural. Regulan el pH del suelo y fortalecen las plantas.'},
+  {id:'cafe',     emoji:'☕', nombre:'Café usado',           svgX:422, svgY:246,
+   info:'☕ <strong>Café usado:</strong> rico en nitrógeno. Mejora el sustrato y fomenta la actividad microbiana.'},
+  {id:'naranja',  emoji:'🍊', nombre:'Cáscara de naranja',  svgX:470, svgY:244,
+   info:'🍊 <strong>Cáscara de naranja:</strong> repele insectos dañinos y aporta micronutrientes al compost.'},
+  {id:'verduras', emoji:'🥬', nombre:'Hojas de verduras',   svgX:518, svgY:246,
+   info:'🥬 <strong>Hojas de verduras:</strong> ricas en nitrógeno y fibra. Se descomponen rápido y enriquecen el suelo.'},
+];
+
+// ✅ CORREGIDO: Nombres reales para los distractores en lugar de '???'
+const DISTRACTORES = [
+  {id:'tv',       emoji:'📺', nombre:'Televisor',
+   info:'📺 Este objeto no aporta nada al crecimiento de la huerta. ¡Las plantas prefieren la luz del sol!'},
+  {id:'consola',  emoji:'🎮', nombre:'Consola de juegos',
+   info:'🎮 Muy entretenida, pero no tiene ningún valor nutritivo para tus plantas. Mejor úsala luego de regar.'},
+  {id:'pizza',    emoji:'🍕', nombre:'Pizza',
+   info:'🍕 Los alimentos procesados no sirven de abono. Solo los residuos orgánicos naturales son útiles.'},
+  {id:'celular',  emoji:'📱', nombre:'Teléfono celular',
+   info:'📱 Tu celular no fertiliza nada… aunque sí puedes buscar tutoriales de jardinería en él.'},
+  {id:'zapato',   emoji:'👟', nombre:'Zapato deportivo',
+   info:'👟 Un zapato no ayuda a germinar semillas. Guárdalo para salir a comprar tierra abonada.'},
+  {id:'peinilla', emoji:'🪮', nombre:'Peinilla',
+   info:'🪮 Las plantas no necesitan peinarse. Este objeto no tiene utilidad en tu huerta urbana.'},
+  {id:'lapicero', emoji:'✏️', nombre:'Lápiz',
+   info:'✏️ Con él puedes anotar qué sembraste, pero no sirve como abono ni sustrato. ¡Guárdalo!'},
+  {id:'crema',    emoji:'🧴', nombre:'Crema corporal',
+   info:'🧴 Los productos cosméticos contienen químicos que dañan el suelo. No los uses como abono.'},
+  {id:'dulces',   emoji:'🍬', nombre:'Dulces',
+   info:'🍬 Los dulces atraen hormigas y hongos dañinos. Son para ti, no para las plantas.'},
+  {id:'audifono', emoji:'🎧', nombre:'Audífonos',
+   info:'🎧 La música te inspira a cuidar tu huerta, ¡pero los audífonos no fertilizan nada!'},
+  {id:'dados',    emoji:'🎲', nombre:'Dados de juego',
+   info:'🎲 Los juegos de azar no tienen ningún rol en el crecimiento vegetal. Tu huerta no necesita suerte, ¡necesita cuidado!'},
+  {id:'raqueta',  emoji:'🏸', nombre:'Raqueta de bádminton',
+   info:'🏸 El deporte es genial, pero una raqueta no aporta nutrientes ni agua a tus plantas.'},
+];
+
+// ══════════════════════════
+// ESTADO
+// ══════════════════════════
+let estado={};
+let correctosAcum=0;
+const TOTAL=NECESARIOS.length;
+
+// ══════════════════════════
+// MEZCLAR
+// ══════════════════════════
+function mezclar(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+// ══════════════════════════
+// RENDER
+// ══════════════════════════
+function renderGrid(){
+  const todos=mezclar([...NECESARIOS,...DISTRACTORES]);
+  const grid=document.getElementById('gridTodos');
+  grid.innerHTML='';
+  todos.forEach(obj=>{
+    const col=document.createElement('div');
+    col.className='col-4 col-sm-3 col-md-2';
+    col.innerHTML=`
+      <button class="objeto-btn" id="btn-${obj.id}" onclick="seleccionar('${obj.id}')" aria-label="Seleccionar ${obj.nombre}">
+        <span class="emoji">${obj.emoji}</span>
+        <span class="nombre">${obj.nombre}</span>
+        <span class="check-overlay" id="check-${obj.id}"></span>
+      </button>`;
+    grid.appendChild(col);
+  });
+}
+
+// ══════════════════════════
+// SELECCIONAR ✅ CORREGIDO: sin scroll automático
+// ══════════════════════════
+function seleccionar(id){
+  if(estado[id]!==undefined) return;
+  const esBueno=NECESARIOS.some(o=>o.id===id);
+  estado[id]=esBueno;
+
+  const btn=document.getElementById('btn-'+id);
+  const chk=document.getElementById('check-'+id);
+  const obj=[...NECESARIOS,...DISTRACTORES].find(o=>o.id===id);
+
+  if(esBueno){
+    btn.classList.add('correcto'); chk.textContent='✓';
+    correctosAcum++;
+    colocarEnBalcon(obj);
+    reaccionNino(true);
+  } else {
+    btn.classList.add('incorrecto'); chk.textContent='✕';
+    reaccionNino(false);
+  }
+
+  const fb=document.getElementById('feedbackBox');
+  fb.className='feedback-box'+(esBueno?'':' error');
+  fb.innerHTML=obj.info;
+  // ✅ CORRECCIÓN: Eliminamos el scroll automático que causaba el "arrastre"
+
+  actualizarProgreso();
+
+  if(Object.keys(estado).length>=5){
+    document.getElementById('btnVerificar').style.display='inline-block';
+  }
+}
+
+// ══════════════════════════
+// COLOCAR EN EL BALCÓN
+// ══════════════════════════
+function colocarEnBalcon(obj){
+  const zona=document.getElementById('zonaItems');
+  const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+  txt.setAttribute('x',obj.svgX);
+  txt.setAttribute('y',obj.svgY + 20);
+  txt.setAttribute('font-size','26');
+  txt.setAttribute('text-anchor','middle');
+  txt.setAttribute('opacity','0');
+  txt.textContent=obj.emoji;
+  zona.appendChild(txt);
+
+  let op=0;
+  let yStart=obj.svgY+20;
+  let yEnd=obj.svgY;
+  const step=()=>{
+    op+=0.12;
+    const curY=yStart-(yStart-yEnd)*Math.min(op,1);
+    txt.setAttribute('opacity',Math.min(op,1));
+    txt.setAttribute('y',curY);
+    if(op<1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// ══════════════════════════
+// REACCIÓN NIÑO
+// ══════════════════════════
+let timerNino=null;
+function reaccionNino(bueno){
+  clearTimeout(timerNino);
+  const cNormal=document.getElementById('caraNormal');
+  const cFeliz=document.getElementById('caraFeliz');
+  const cDuda=document.getElementById('caraDuda');
+  const cExc=document.getElementById('caraExcelente');
+  const bocadillo=document.getElementById('bocadilloNino');
+  const bocTxt=document.getElementById('bocadilloTxt');
+  const bocRect=document.getElementById('bocadilloRect');
+
+  [cNormal,cFeliz,cDuda,cExc].forEach(c=>c.style.display='none');
+  bocadillo.style.display='block';
+
+  if(bueno){
+    cFeliz.style.display='block';
+    bocTxt.textContent='¡Muy bien! 🌱';
+    bocTxt.setAttribute('fill','#2d6a4f');
+    bocRect.setAttribute('stroke','#40916c');
+  } else {
+    cDuda.style.display='block';
+    bocTxt.textContent='Eso no sirve aquí...';
+    bocTxt.setAttribute('fill','#c0392b');
+    bocRect.setAttribute('stroke','#e74c3c');
+  }
+
+  timerNino=setTimeout(()=>{
+    [cNormal,cFeliz,cDuda,cExc].forEach(c=>c.style.display='none');
+    cNormal.style.display='block';
+    bocadillo.style.display='none';
+  },2300);
+}
+
+// ══════════════════════════
+// PROGRESO
+// ══════════════════════════
+function actualizarProgreso(){
+  const pct=Math.round((correctosAcum/TOTAL)*100);
+  document.getElementById('barraProgreso').style.width=pct+'%';
+  document.getElementById('contadorTexto').textContent=correctosAcum+' / '+TOTAL;
+}
+
+// ══════════════════════════
+// RESULTADO FINAL
+// ══════════════════════════
+function mostrarResultado(){
+  const rf=document.getElementById('resultadoFinal');
+  const icono=document.getElementById('iconoResultado');
+  const titulo=document.getElementById('tituloResultado');
+  const texto=document.getElementById('textoResultado');
+
+  clearTimeout(timerNino);
+  const cNormal=document.getElementById('caraNormal');
+  const cFeliz=document.getElementById('caraFeliz');
+  const cDuda=document.getElementById('caraDuda');
+  const cExc=document.getElementById('caraExcelente');
+  [cNormal,cFeliz,cDuda,cExc].forEach(c=>c.style.display='none');
+  document.getElementById('bocadilloNino').style.display='none';
+
+  rf.style.display='block';
+  rf.scrollIntoView({behavior:'smooth',block:'start'});
+
+  if(correctosAcum>=TOTAL){
+    rf.className='resultado-final exito';
+    icono.textContent='🌟';
+    titulo.textContent='¡Tu huerta con productos orgánicos es viable y dará vida a tus propios alimentos!';
+    texto.textContent='Identificaste todos los elementos esenciales: luz, agua, sustrato y abonos orgánicos domésticos. ¡Felicitaciones, tu huerta va a florecer!';
+    cExc.style.display='block';
+  } else if(correctosAcum>=Math.ceil(TOTAL*0.6)){
+    rf.className='resultado-final falta';
+    icono.textContent='🌿';
+    titulo.textContent='¡Casi lista! Pero le faltan algunos elementos importantes.';
+    texto.textContent=`Seleccionaste ${correctosAcum} de ${TOTAL} elementos necesarios. Revisa qué falta y vuelve a intentarlo. ¡Muy cerca!`;
+    cFeliz.style.display='block';
+  } else {
+    rf.className='resultado-final falta';
+    icono.textContent='⚠️';
+    titulo.textContent='Faltan elementos importantes para que las plantas crezcan sanas.';
+    texto.textContent=`Solo identificaste ${correctosAcum} de ${TOTAL} elementos. Presta atención a qué necesita una huerta urbana y vuelve a intentarlo. ¡Tú puedes!`;
+    cDuda.style.display='block';
+  }
+}
+
+// ══════════════════════════
+// REINICIAR
+// ══════════════════════════
+function reiniciar(){
+  clearTimeout(timerNino);
+  estado={};
+  correctosAcum=0;
+
+  document.getElementById('resultadoFinal').style.display='none';
+  document.getElementById('btnVerificar').style.display='none';
+  document.getElementById('feedbackBox').innerHTML=
+    '<span style="color:#aaa;">Haz clic en un objeto para ver la retroalimentación aquí.</span>';
+
+  document.getElementById('zonaItems').innerHTML='';
+
+  const cNormal=document.getElementById('caraNormal');
+  const cFeliz=document.getElementById('caraFeliz');
+  const cDuda=document.getElementById('caraDuda');
+  const cExc=document.getElementById('caraExcelente');
+  [cNormal,cFeliz,cDuda,cExc].forEach(c=>c.style.display='none');
+  cNormal.style.display='block';
+  document.getElementById('bocadilloNino').style.display='none';
+
+  actualizarProgreso();
+  renderGrid();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// INIT
+renderGrid();
+actualizarProgreso();
+</script>
+</body>
+</html>
